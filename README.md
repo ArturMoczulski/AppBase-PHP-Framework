@@ -11,12 +11,38 @@ Installation
 ===
 
 1. Deploy the project into desired directory.
-2. Set up the database:
+2. Set up the the virtual host to point application's base URL into the desired directory (see Apache 2 example virtual hosts file below).
+3. Set up the database:
   1. Create a database and a database user.
   2. Adjust base migration files to use the right database. Modify the `use` statement at the beginning of all migration files.
   3. Run the migrations: `cat db/migrations/* | mysql -u[db_username] -p[db_password] [db_name]`
   4. Provide database connection credentials in config/db.php
-3. Configure the application:
+4. Configure the application:
   1. Provide application's base URL in config/application.php.
   2. Provide database connection credentials in config/db.php
-4. Go to application's base URL and follow the further instructions to create the superuser.
+5. Go to application's base URL and follow the further instructions to create the superuser.
+
+Example Apache2 virtual host configuration
+===
+
+<VirtualHost *:80>
+
+  ServerAdmin artur.moczulski@gmail.com
+  ServerName [application_base_url]
+
+  DocumentRoot [application_root_directory]
+
+  LogLevel debug
+  ErrorLog /var/log/apache2/[application_base_url]-error_log
+  CustomLog /var/log/apache2/[application_base_url]-acces_log common
+
+  RewriteEngine on
+
+  <Directory [application_root_directory]>
+    Options FollowSymLinks
+    AllowOverride all
+    Order deny,allow
+    Allow from all
+  </Directory>
+
+</VirtualHost>
