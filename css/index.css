@@ -1,0 +1,148 @@
+body {
+    background: #CCC;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header,footer { 
+  background: #FFFFFF;
+  border-radius:5px;
+  padding:1em;
+  box-shadow: 2px 2px 8px #000;
+  width:100%;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+header h1, header h3, header h6, footer h6 {
+  margin: 0;
+  font-weight: normal;
+	text-align: center;
+}
+
+a {
+  color:#000;
+  text-decoration:none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+table {
+  border-collapse:collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+th,td { padding:0.5em; }
+
+input, select, textarea { display:block; border: 1px solid #000; border-radius:5px; padding:0.5em; background: #fff; margin-bottom:0.5em; }
+fieldset { border: none; margin-top: 1em; padding-left:0; }
+
+div.errors {
+  padding:1em;
+  background: #ff7777;
+  font-weight:bold;
+  border-radius:5px;
+  box-shadow: 2px 2px 8px #000;
+  margin-bottom:1em;
+}
+
+div.errors h3 { margin-top: 0; }
+
+div.errors ul {
+  margin-bottom:0;
+}
+
+legend { font-weight:bold; }
+
+p.flash {
+  padding:1em;
+  background: #77cc77;
+  font-weight:bold;
+  border-radius:5px;
+  box-shadow: 2px 2px 8px #000
+}
+
+#app-content {
+  padding:1em;
+  margin: 0 auto;
+  width:1024px;
+}
+
+#content {
+  background: #FFFFFF;
+  border-radius:5px;
+  padding:1em;
+  box-shadow: 2px 2px 8px #000;
+  float:left;
+  width:75%;
+}
+
+.users-login-content-box { width: 100% !important; }
+
+#first-column {
+  float:left;
+  margin-right:1em;
+  width:20%;
+}
+
+#first-column ul { padding: 0; margin:0; }
+
+#first-column ul li {
+  background: #FFFFFF;
+  margin:0;
+  list-style:none;
+  border-radius:5px;
+  margin-bottom:1em;
+  box-shadow: 2px 2px 8px #000
+}
+
+#first-column ul li a {
+  color:black;
+  display:block;
+  padding:1em;
+}
+
+#first-column ul li a:hover {
+  background: #FFFFFF; 
+  border-radius:5px;
+  box-shadow: 2px 2px 8px #FFF;
+}
+
+#first-column li.user-switch {
+  padding:1em;
+}
+
+#first-column li.user-switch select, 
+#first-column li.user-switch input {
+  width:11.5em;
+}
+#first-column li.user-switch h4 {  margin:0 0 0.5em 0; }
+
+.clearfix { clear:both; }
+
+a.action {
+  background: #CCC;
+  padding:0.3em;
+  border-radius:5px;
+  color: #000;
+  margin:0.2em;
+}
+
+ul.actions {
+  margin:1em 0 1em 0;
+  padding:0;
+  list-style:none;
+}
+
+ul.actions li {
+  padding:0;
+  display:inline;
+}
