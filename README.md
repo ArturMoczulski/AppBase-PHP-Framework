@@ -25,24 +25,24 @@ Installation
 Example Apache2 virtual host configuration
 ===
 
-<VirtualHost *:80>
+    <VirtualHost *:80>
 
-  ServerAdmin artur.moczulski@gmail.com
-  ServerName [application_base_url]
+      ServerAdmin artur.moczulski@gmail.com
+      ServerName [application_base_url]
 
-  DocumentRoot [application_root_directory]
+      DocumentRoot [application_root_directory]
 
-  LogLevel debug
-  ErrorLog /var/log/apache2/[application_base_url]-error_log
-  CustomLog /var/log/apache2/[application_base_url]-acces_log common
+      LogLevel debug
+      ErrorLog /var/log/apache2/[application_base_url]-error_log
+      CustomLog /var/log/apache2/[application_base_url]-acces_log common
 
-  RewriteEngine on
+      RewriteEngine on
+      
+      <Directory [application_root_directory]>
+        Options FollowSymLinks
+        AllowOverride all
+        Order deny,allow
+        Allow from all
+      </Directory>
 
-  <Directory [application_root_directory]>
-    Options FollowSymLinks
-    AllowOverride all
-    Order deny,allow
-    Allow from all
-  </Directory>
-
-</VirtualHost>
+    </VirtualHost>
