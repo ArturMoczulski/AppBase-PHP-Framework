@@ -63,5 +63,10 @@ Conventions
 
 Creating new models
 -------------------
-
-NOTE: This framework currently supports only 1 to 1 table to model matching. No table inheritance is supported at this time.
+1. Create a new migration file in db/migrations/, i.e. "db/migrations/20130705_001.sql" with a SQL to create the model table, i.e.:
+    USE `example_project`;
+    CREATE TABLE IF NOT EXISTS `products` (
+        `id` int(5) NOT NULL AUTO_INCREMENT,
+        `name` varchar(50) CHARACTER SET utf8 NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
