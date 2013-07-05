@@ -113,3 +113,12 @@ Creating new controllers
     public function viewAction($iId) {
     }
     ```
+
+Creating new views
+------------------
+1. Create a new file in the views directory for the right controller views/[underscore controller name]/. The file name should be underscored action name with ".php" suffix, i.e. `views/products/view.php`. You can use plain HTML / PHP code in the view file.
+    ```html
+
+    <h2>Product details</h2>  
+    <p>This view shows details of a product</p>  
+    ```
