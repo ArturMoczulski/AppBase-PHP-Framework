@@ -63,10 +63,52 @@ Conventions
 
 Creating new models
 -------------------
-1. Create a new migration file in db/migrations/, i.e. "db/migrations/20130705_001.sql" with a SQL to create the model table, i.e.:
-    USE `example_project`;
-    CREATE TABLE IF NOT EXISTS `products` (
-        `id` int(5) NOT NULL AUTO_INCREMENT,
-        `name` varchar(50) CHARACTER SET utf8 NOT NULL,
-      PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+1. Create a new migration file in db/migrations/, i.e. "db/migrations/20130705_001.sql" with SQL to create the model table, i.e.:
+    ```
+    USE example_project;
+
+    CREATE TABLE IF NOT EXISTS products (  
+      id int(5) NOT NULL AUTO_INCREMENT,  
+      name varchar(50) CHARACTER SET utf8 NOT NULL,  
+      PRIMARY KEY (id)  
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;  
+    ```
+2. Run the migration file: `cat db/migrations/20130705_001.sql | mysql -u[db_user] -p[db_pass] [db_name]`.
+3. Create the model class in models/, i.e. models/Product.class.php, i.e.
+    ```php
+    <?php
+
+    namespace Models;
+
+    class Product extends \Core\Model {
+    }
+    
+    ?>
+    ```
+
+Creating new controllers
+------------------------
+1. Create a new controller class in controllers/, i.e. "controllers/Products.controller.php" with the controller class, i.e.
+    ```php
+    <?php
+
+    namespace Controllers;
+    
+    class Products extends \Core\Controller {
+    }
+
+    ?>
+    ```
+2. If you want to create a controller matching a model, i.e. \Models\Product, this is enough. However, if you need to use a different or additional models, define the `aModelsUsed` property with class names of models to use, i.e.
+    ```php
+    protected $aModelsUsed = array('\Models\Product', '\Models\Retailer');
+    ```
+3. If you don't want to use any models, define the `aModelsUsed` property as an empty array, like so:
+    ```php
+    protected $aModelsUsed = array();
+    ```
+4. Add actions to the controller; the method's parameters are arguments passed in the request URI after the action name, divided by "/" (i.e. www.example.com/products/view/1)
+    ```php
+    public function viewAction($iId) {
+    }
+    ```
