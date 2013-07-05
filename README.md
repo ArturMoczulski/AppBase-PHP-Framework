@@ -14,7 +14,7 @@ Installation
 2. Set up the the virtual host to point application's base URL into the desired directory (see Apache 2 example virtual hosts file below).
 3. Set up the database:
   1. Create a database and a database user.
-  2. Adjust base migration files to use the right database. Modify the `use` statement at the beginning of all migration files.
+  2. Adjust base migration files to use the right database. Run: `sed -i 's/custom_framework/[db_name]/' db/migrations/*`.
   3. Run the migrations: `cat db/migrations/* | mysql -u[db_username] -p[db_password] [db_name]`
   4. Provide database connection credentials in config/db.php
 4. Configure the application:
