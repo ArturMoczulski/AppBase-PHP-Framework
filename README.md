@@ -51,14 +51,15 @@ Working with the framework
 
 Conventions
 -----------
-* Table names: underscored plural nouns, i.e. "users",
-* Table columns: underscored, i.e. "email_address",
-* Foreign key names: underscored with "_id" suffix, i.e. "user_id",
+* <b>Table names:</b> underscored plural nouns, i.e. "users",
+* <b>Table columns:</b> underscored, i.e. "email_address",
+* <b>Foreign key names:</b> underscored with "_id" suffix, i.e. "user_id",
 * Any class file names except controller classes have a ".class.php" suffix,
-* Model classes: camelcase singular, i.e. "User";  the model class has to be enclosed in the "\Models\" namespace and extend "\Core\Model"; all model classes are stored in models/ directory,
-* Controller classes: camelcase plural, i.e. "Users"; the controller class hat to be enclosed in the "\Controllers\" namespace and extend "\Core\Controller"; all controller classes are stored in controllers/ directory; all controller class file names must have a ".controller.php" prefix instead of ".class.php",
-* Views: views for controller's actions are stored in views/[underscored controller name]/[action name].php;
-
+* <b>Model classes:</b> camelcase singular, i.e. "User";  the model class has to be enclosed in the "\Models\" namespace and extend "\Core\Model"; all model classes are stored in models/ directory,
+* <b>Controller classes:</b> camelcase plural, i.e. "Users"; the controller class hat to be enclosed in the "\Controllers\" namespace and extend "\Core\Controller"; all controller classes are stored in controllers/ directory; all controller class file names must have a ".controller.php" prefix instead of ".class.php",
+* <b>Action names:</b> underscored with "Action" suffix, i.e. loginAction,
+* Only controller public methods with the "Action" suffix are considered actions,
+* <b>Views:</b> views for controller's actions are stored in views/[underscored controller name]/[underscored action name].php;
 
 Creating new models
 -------------------
