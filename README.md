@@ -8,6 +8,7 @@ The purpose of this framework is to provide a very simple basis for highly custo
 This framework has been tested only for MySQL and probably supports only this database. There are DB abstration tools included, but no other database server has been tested or tried.
 
 === Installation ===
+
 1. Deploy the project into desired directory.
 2. Set up the database:
   1. Create a database and a database user.
