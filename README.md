@@ -22,7 +22,7 @@ Installation
 5. Go to application's base URL and follow the further instructions to create the superuser.
 
 Example Apache2 virtual host configuration
-===
+------------------------------------------
 
     <VirtualHost *:80>
 
@@ -45,3 +45,22 @@ Example Apache2 virtual host configuration
       </Directory>
 
     </VirtualHost>
+
+Working with the framework
+==========================
+
+Conventions
+-----------
+* Table names: underscored plural nouns, i.e. "users",
+* Table columns: underscored, i.e. "email_address",
+* Foreign key names: underscored with "_id" suffix, i.e. "user_id",
+* Any class file names except controller classes have a ".class.php" suffix,
+* Model classes: camelcase singular, i.e. "User";  the model class has to be enclosed in the "\Models\" namespace and extend "\Core\Model"; all model classes are stored in models/ directory,
+* Controller classes: camelcase plural, i.e. "Users"; the controller class hat to be enclosed in the "\Controllers\" namespace and extend "\Core\Controller"; all controller classes are stored in controllers/ directory; all controller class file names must have a ".controller.php" prefix instead of ".class.php",
+* Views: views for controller's actions are stored in views/[underscored controller name]/[action name].php;
+
+
+Creating new models
+-------------------
+
+NOTE: This framework currently supports only 1 to 1 table to model matching. No table inheritance is supported at this time.
