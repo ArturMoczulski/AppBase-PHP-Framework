@@ -17,7 +17,7 @@ Installation
   2. Adjust base migration files to use the right database. Run: `sed -i 's/custom_framework/[db_name]/' db/migrations/*`.
   3. Run the migrations: `cat db/migrations/* | mysql -u[db_username] -p[db_password] [db_name]`
 4. Configure the application:
-  1. Provide application's base URL in config/application.php.
+  1. Provide application's base URL and name in config/application.php.
   2. Provide database connection credentials in config/db.php
 5. Go to application's base URL and follow the further instructions to create the superuser.
 
