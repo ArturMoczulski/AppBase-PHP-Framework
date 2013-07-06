@@ -167,6 +167,7 @@ abstract class Controller {
     if( !\Controllers\AppInstallation::IsInstalled() &&
         !($this instanceof \Controllers\AppInstallation) &&
         !$this->internalRequest() ) {
+      session_destroy();
       $this->redirect("/install");
     } else {
 
