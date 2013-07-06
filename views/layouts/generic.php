@@ -3,13 +3,13 @@
     <head>
         <base href="<?php echo $GLOBALS['Application']['URL'] ?>" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>AppBase PHP Framework</title>
+        <title><?php echo $GLOBALS['Application']['name'] ?></title>
         <link rel='stylesheet' type='text/css' href='css/index.css' />
     </head>
     <body>
 
       <header>
-        <h1>AM custom framework</h1>
+      <h1><?php echo $GLOBALS['Application']['name'] ?></h1>
       </header>
 
       <div id="content-cotainer">

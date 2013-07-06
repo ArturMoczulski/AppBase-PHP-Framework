@@ -3,7 +3,7 @@ $GLOBALS['Application']['DB'] = array(
   'host'=>'localhost',
   'user'=>'root',
   'pass'=>'root',
-  'name'=>'custom_framework',
+  'name'=>'appbase',
   'port'=>'',
   'sock'=>'/var/run/mysqld/mysqld.sock' 
 );

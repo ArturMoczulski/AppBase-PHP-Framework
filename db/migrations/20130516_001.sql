@@ -1,4 +1,4 @@
-USE `custom_framework`;
+USE `appbase`;
 
 CREATE TABLE IF NOT EXISTS `users` (
     `id` int(5) NOT NULL AUTO_INCREMENT,

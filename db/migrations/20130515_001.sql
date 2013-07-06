@@ -1,4 +1,4 @@
-USE `custom_framework`;
+USE `appbase`;
 
 INSERT INTO `groups` (id,title) VALUES 
   (null, "user"),

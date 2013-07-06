@@ -1,4 +1,4 @@
-USE `custom_framework`;
+USE `appbase`;
 
 -- Access Control Object (objects being request) --
 CREATE TABLE IF NOT EXISTS `aco` (

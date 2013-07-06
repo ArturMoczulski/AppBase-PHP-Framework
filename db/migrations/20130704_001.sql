@@ -1,4 +1,4 @@
-USE `custom_framework`;
+USE `appbase`;
 
 -- Setting up access --
 
