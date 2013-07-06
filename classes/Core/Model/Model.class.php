@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace Core\Model;
 
 abstract class Model {
 
@@ -95,7 +95,7 @@ abstract class Model {
         if( !isset($this->aValidationRules[$oBelongsTo->getPropertyName()]) )
           $this->aValidationRules[$oBelongsTo->getPropertyName()]  = array();
 
-        $oRule = new Validation\Rules\BelongsTo();
+        $oRule = new \Core\Validation\Rules\BelongsTo();
         $oRule->setPropertyName($oBelongsTo->getPropertyName());
         $oRule->setModel($this);
 
@@ -150,7 +150,7 @@ abstract class Model {
   public function save($iDepth = 1) {
     $this->beforeSave();
 
-    $oSaveResult = new Validation\SaveResult();
+    $oSaveResult = new \Core\Validation\SaveResult();
 
     // TODO: add a transaction
     // TODO: add support for save results from the related models
@@ -187,7 +187,7 @@ abstract class Model {
 
   protected function saveBelongsTo($iDepth = 1) {
 
-    $oSaveBelongsToResult = new Validation\SaveResult();
+    $oSaveBelongsToResult = new \Core\Validation\SaveResult();
 
     foreach( $this->oRelationsSchema->getBelongsTo() as $oBelongsTo ) {
       $oSaveBelongsToResult->merge($oBelongsTo->save($this, $iDepth-1));
@@ -199,7 +199,7 @@ abstract class Model {
 
   protected function saveHasMany($iDepth = 1) {
 
-    $oSaveHasMany = new Validation\SaveResult();
+    $oSaveHasMany = new \Core\Validation\SaveResult();
 
     foreach( $this->oRelationsSchema->getHasMany() as $oHasMany ) {
       $oSaveHasMany->merge($oHasMany->save($this, $iDepth-1));

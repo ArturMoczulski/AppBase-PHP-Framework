@@ -6,7 +6,7 @@ class ViewRenderer extends Helpers\Helper {
 
   protected $aHelpers = array("Model","HTML");
 
-  public function render(ControllerResponse $oResponse) {
+  public function render(\Core\Controller\ControllerResponse $oResponse) {
 
     $sControllerName = \Utils\NounInflector::Underscore($oResponse->getControllerName());
     $sActionName = \Utils\NounInflector::Underscore($oResponse->getActionName());

@@ -17,7 +17,7 @@ abstract class Controller {
 
   public function invokeControllerAction($sControllerName, $sActionName, $aArguments = array()) {
 
-    $oDispatcher = new Dispatcher();
+    $oDispatcher = new \Core\Dispatcher();
     $oResponse = $oDispatcher->dispatch($sControllerName, $sActionName, $aArguments, true); 
 
     foreach( $oResponse->getViewData() as $sVariableName => $mValue )
@@ -102,8 +102,10 @@ abstract class Controller {
   }
 
   protected function restoreSession() {
-    if( !session_id())
+    if( !session_id() ) {
       session_start();
+    }
+
     $this->restoreFlash();
     $this->restoreValidationErrors();
   }

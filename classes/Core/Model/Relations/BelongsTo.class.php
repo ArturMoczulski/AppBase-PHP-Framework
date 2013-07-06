@@ -4,7 +4,6 @@ namespace Core\Model\Relations;
 
 class BelongsTo extends Definition {
 
-
   public function save(\Core\Model\Model $oModel, $iDepth = 1) {
 
     $sPropertyName = $this->getPropertyName();
@@ -47,7 +46,7 @@ class BelongsTo extends Definition {
     $sName = \Utils\NounInflector::Underscore($sName);
     $sPropertyName = \Utils\NounInflector::Underscore($sName);
     $sForeignKey = $sPropertyName . "_id";
-    return new BelongsTo($sName, $sClassName, $sPropertyName, $sForeignKey);
+    return new self($sName, $sClassName, $sPropertyName, $sForeignKey);
   }
 
   public static function CreateFromArray($aRelationSpec) {
@@ -60,7 +59,7 @@ class BelongsTo extends Definition {
     $sPropertyName = \Utils\NounInflector::Underscore($sName);
     $sForeignKeyName = isset($aRelationSpec['foreignKeyName']) ? $aRelationSpec['foreignKeyName'] : $sPropertyName . "_id";
 
-    return new BelongsTo($sName, $sClassName, $sPropertyName, $sForeignKeyName);
+    return new self($sName, $sClassName, $sPropertyName, $sForeignKeyName);
 
   }
 

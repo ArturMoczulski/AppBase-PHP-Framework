@@ -36,7 +36,7 @@ class Dispatcher {
 
     $oController->callAction($sControllerMethod, $aArguments, $bInternalRequest);  
 
-    $oResult = new ControllerResponse(
+    $oResult = new \Core\Controller\ControllerResponse(
       $sControllerName, 
       $sActionName, 
       $oController->getViewData(), 

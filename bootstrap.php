@@ -34,16 +34,12 @@ function loadLogic($sLogicName) {
       $sFilePath = str_replace("\\","/","classes/".$sLogicName.".class.php");
       break;
   }
-/*
-  if( substr($sLogicName, strlen($sLogicName)-strlen("Controller")) == "Controller" && $sLogicName != "Core\\Controller" ) {
-    $sFilePath = "controllers/".$sLogicName.".controller.php"; 
-  } else if( substr($sLogicName, 0, strlen("Models\\")) == "Models\\" ) {
-    $sFilePath = str_replace("\\", "/", "models/".substr($sLogicName, strlen("Models\\"))).".class.php";
+
+  if( file_exists($sFilePath) ) {
+    include $sFilePath;
   } else {
-    $sFilePath = str_replace("\\","/","classes/".$sLogicName.".class.php");
+    throw new \Exception("Class \"$sLogicName\" source file \"$sFilePath\" not found. ");
   }
- */
-  include $sFilePath;
 }
 
 function handle_exception($oException) {
