@@ -2,24 +2,24 @@
 
 namespace Models;
 
-class ARO extends \Core\Model {
+class ARO extends \Core\Model\Model {
 
-  public function findByRequestObject(\Core\Model $oModel, $iDepth = 1) {
+  public function findByRequestObject(\Core\Model\Model $oModel, $iDepth = 1) {
 
-    $oFilter = new \Core\DataFilter();
+    $oFilter = new \Core\Database\DataFilter();
 
     $oFilter->addConstraint(
-      new \Core\DataFilterConstraint(
+      new \Core\Database\DataFilterConstraint(
         "object_id", 
-        \Core\DataFilterConstraint::EQUAL, 
+        \Core\Database\DataFilterConstraint::EQUAL, 
         $oModel->id));
 
     $oFilter->addConstraint(
-      new \Core\DataFilterConstraint(
+      new \Core\Database\DataFilterConstraint(
         "table_name", 
-        \Core\DataFilterConstraint::EQUAL, 
+        \Core\Database\DataFilterConstraint::EQUAL, 
         $oModel->getTableName(),
-        \Core\DataFilterConstraint::_AND));
+        \Core\Database\DataFilterConstraint::_AND));
 
     return $this->find($oFilter, true, $iDepth);
 

@@ -5,7 +5,7 @@ class Model extends Helper {
 
   protected $aHelpers = array("HTML");
 
-  public function tableHeader(\Core\Model $oModel, $aIgnoreProperties = array()) {
+  public function tableHeader(\Core\Model\Model $oModel, $aIgnoreProperties = array()) {
 
     $aHeader = array();
     foreach($oModel->getProperties() as $sPropertyName => $mPropertyValue ) {
@@ -16,7 +16,7 @@ class Model extends Helper {
     return $aHeader;
   }
 
-  public function renderTableHeader(\Core\Model $oModel, $aIgnoreProperties = array(), $bShowActions = true ) {
+  public function renderTableHeader(\Core\Model\Model $oModel, $aIgnoreProperties = array(), $bShowActions = true ) {
     echo "<tr>";
     foreach($this->tableHeader($oModel, $aIgnoreProperties) as $sPropertyName) {
       echo "<th>".$sPropertyName."</th>";
@@ -26,14 +26,14 @@ class Model extends Helper {
     echo "</tr>";
   }
 
-  public function tableRow(\Core\Model $oModel, $aIgnoreProperties = array())  {
+  public function tableRow(\Core\Model\Model $oModel, $aIgnoreProperties = array())  {
     $aRow = array();
     foreach( $oModel->getProperties() as $sPropertyName => $mPropertyValue ) {
 
       if( in_array($sPropertyName, $aIgnoreProperties)) continue;
 
       if( isset($oModel->$sPropertyName) && 
-          ($oModel->$sPropertyName instanceof \Core\Model) ) {
+          ($oModel->$sPropertyName instanceof \Core\Model\Model) ) {
 
           $aDefaultAction = $oModel->$sPropertyName->getDefaultAction();
 
@@ -59,7 +59,7 @@ class Model extends Helper {
     echo $this->getHelper("HTML")->link($sLinkName, $sControllerName, $sActionName, $aArguments, null, "action");
   }
 
-  public function renderTableRow(\Core\Model $oModel, $aIgnoreProperties = array(), $aActions = array() ) {
+  public function renderTableRow(\Core\Model\Model $oModel, $aIgnoreProperties = array(), $aActions = array() ) {
     echo "<tr>";
     foreach( $this->tableRow($oModel, $aIgnoreProperties) as $mPropertyValue )
       echo "<td>".$mPropertyValue."</td>";
@@ -77,7 +77,7 @@ class Model extends Helper {
     echo "</tr>";
   }
 
-  public function renderTable(\Core\Model $oModel, $mData, $aIgnoreProperties = array(), $aActions = array() ) {
+  public function renderTable(\Core\Model\Model $oModel, $mData, $aIgnoreProperties = array(), $aActions = array() ) {
     echo "<table>";
     $this->renderTableHeader($oModel, $aIgnoreProperties, count($aActions));
     if( count($mData) ) {

@@ -5,7 +5,7 @@ abstract class Controller {
 
   public function __construct() {
 
-    \Core\Database::GetInstance()->connect();
+    \Core\Database\Database::GetInstance()->connect();
 
     foreach( $this->getModelsUsed() as $sModelClass ) {
       $this->loadModel($sModelClass);

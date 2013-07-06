@@ -5,7 +5,7 @@ namespace Core\Relations;
 class BelongsTo extends Definition {
 
 
-  public function save(\Core\Model $oModel, $iDepth = 1) {
+  public function save(\Core\Model\Model $oModel, $iDepth = 1) {
 
     $sPropertyName = $this->getPropertyName();
 
@@ -21,7 +21,7 @@ class BelongsTo extends Definition {
     return null;
   }
 
-  public function load(\Core\Model $oModel, $iDepth = 1) {
+  public function load(\Core\Model\Model $oModel, $iDepth = 1) {
 
     $oRelatedModel = $this->getModelInstance();
     $sForeignKeyName = $this->getForeignKeyName();

@@ -7,10 +7,10 @@ abstract class Model {
     $this->sTableName = static::ResolveTableName(); // reference the actual inherited class of the object
 
     // TODO: this should really be resolved using cache
-    $oSchemaStatement = \Core\Database::GetInstance()->query("DESCRIBE ".$this->getTableName());
+    $oSchemaStatement = \Core\Database\Database::GetInstance()->query("DESCRIBE ".$this->getTableName());
     $this->aProperties = $oSchemaStatement->fetchAll(\PDO::FETCH_COLUMN);
 
-    $oPrimaryKeyStatement = \Core\Database::GetInstance()->query("SHOW INDEX FROM ".$this->getTableName()." WHERE key_name = 'PRIMARY'");
+    $oPrimaryKeyStatement = \Core\Database\Database::GetInstance()->query("SHOW INDEX FROM ".$this->getTableName()." WHERE key_name = 'PRIMARY'");
     $sPrimaryKey = $oPrimaryKeyStatement->fetch(\PDO::FETCH_ASSOC);
     $sPrimaryKey = $sPrimaryKey['Column_name'];
     $this->sPrimaryKey = $sPrimaryKey;
@@ -167,8 +167,8 @@ abstract class Model {
     if( $oSaveResult->success() ) {
 
       if( !$this->isNew() ) { 
-        $oFilter = new DataFilter();
-        $oFilter->addConstraint(new DataFilterConstraint($this->getPrimaryKey(),DataFilterConstraint::EQUAL,$this->{$this->getPrimaryKey()}));
+        $oFilter = new \Core\Database\DataFilter();
+        $oFilter->addConstraint(new \Core\Database\DataFilterConstraint($this->getPrimaryKey(),\Core\Database\DataFilterConstraint::EQUAL,$this->{$this->getPrimaryKey()}));
         $this->update($oFilter);
       } else
         $this->insert();
@@ -210,17 +210,17 @@ abstract class Model {
   }
 
   public function findBy($sPropertyName, $sValue, $bSingleObject = false, $iDepth = 1) {
-    $oFilter = new DataFilter();
-    $oFilter->addConstraint(new DataFilterConstraint($sPropertyName, DataFilterConstraint::EQUAL, $sValue));
+    $oFilter = new \Core\Database\DataFilter();
+    $oFilter->addConstraint(new \Core\Database\DataFilterConstraint($sPropertyName, \Core\Database\DataFilterConstraint::EQUAL, $sValue));
     return $this->find($oFilter, $bSingleObject, $iDepth);
   }
 
-  public function find(DataFilter $oFilter = null, $bSingleObject = false, $iDepth = 1) {
-    if( !$oFilter ) $oFilter = new DataFilter();
+  public function find(\Core\Database\DataFilter $oFilter = null, $bSingleObject = false, $iDepth = 1) {
+    if( !$oFilter ) $oFilter = new \Core\Database\DataFilter();
 
     $sQuery = "SELECT * FROM ".$this->getTableName() . $oFilter->buildSql();
 
-    $mStatement = \Core\Database::GetInstance()->query($sQuery);
+    $mStatement = \Core\Database\Database::GetInstance()->query($sQuery);
 
     if( !($mStatement instanceof \PDOStatement) ) {
       throw new \Core\Exceptions\ErrorRetrievingData($sQuery, $mStatement);
@@ -292,7 +292,7 @@ abstract class Model {
       if( !property_exists($this, $sPropertyName) )
         $aValues []= 'null';
       else {
-        $aValues []= Database::GetInstance()->quote($this->$sPropertyName);
+        $aValues []= \Core\Database\Database::GetInstance()->quote($this->$sPropertyName);
       }
     }
 
@@ -303,23 +303,23 @@ abstract class Model {
       "VALUES " .
         " (" . implode(", ", $aValues) . ")";
 
-    $mResult = \Core\Database::GetInstance()->query($sSql);
+    $mResult = \Core\Database\Database::GetInstance()->query($sSql);
 
     if( !($mResult instanceof \PDOStatement) )
       throw new Exceptions\ErrorSavingData($mResult);
 
-    $iId = \Core\Database::GetInstance()->lastInsertId();
+    $iId = \Core\Database\Database::GetInstance()->lastInsertId();
     if( $iId )
       $this->id = $iId;
 
     $this->afterInsert();
   }
 
-  protected function update(DataFilter $oFilter = null) {
+  protected function update(\Core\Database\DataFilter $oFilter = null) {
 
     $this->beforeUpdate();
 
-    if( !$oFilter ) $oFilter = new DataFilter();
+    if( !$oFilter ) $oFilter = new \Core\Database\DataFilter();
 
     $sSql = "UPDATE ".$this->getTableName()." SET ";
 
@@ -327,7 +327,7 @@ abstract class Model {
     foreach( $this->getPropertyNames() as $sPropertyName ) {
       $sValue = 'null';
       if( property_exists($this, $sPropertyName) ) {
-        $sValue = Database::GetInstance()->quote($this->$sPropertyName);
+        $sValue = \Core\Database\Database::GetInstance()->quote($this->$sPropertyName);
       } 
       $aSetStatements []= $sPropertyName . " = " . $sValue;
     }
@@ -336,7 +336,7 @@ abstract class Model {
 
     $sSql .= $oFilter->buildSql();
 
-    $mResult = \Core\Database::GetInstance()->query($sSql);
+    $mResult = \Core\Database\Database::GetInstance()->query($sSql);
 
     if( !($mResult instanceof \PDOStatement) )
       throw new Exceptions\ErrorSavingData($mResult);
@@ -349,20 +349,20 @@ abstract class Model {
   }
 
   public function deleteBy($sPropertyName, $sValue) {
-    $oFilter = new DataFilter();
-    $oFilter->addConstraint(new DataFilterConstraint($sPropertyName, DataFilterConstraint::EQUAL, $sValue));
+    $oFilter = new \Core\Database\DataFilter();
+    $oFilter->addConstraint(new \Core\Database\DataFilterConstraint($sPropertyName, \Core\Database\DataFilterConstraint::EQUAL, $sValue));
     return $this->deleteByFilter($oFilter);
   }
 
-  public function deleteByFilter(DataFilter $oFilter = null) {
+  public function deleteByFilter(\Core\Database\DataFilter $oFilter = null) {
     $this->beforeDelete();
     // TODO: add transactions
     
-    if( !$oFilter ) $oFilter = new DataFilter();
+    if( !$oFilter ) $oFilter = new \Core\Database\DataFilter();
 
     $sSql = "DELETE FROM ".$this->getTableName() . $oFilter->buildSql();
 
-    $mResult = \Core\Database::GetInstance()->query($sSql);
+    $mResult = \Core\Database\Database::GetInstance()->query($sSql);
 
     if( !($mResult instanceof \PDOStatement) )
       throw new Exceptions\ErrorSavingData($mResult);

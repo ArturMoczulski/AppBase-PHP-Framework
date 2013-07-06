@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class ACO extends \Core\Model {
+class ACO extends \Core\Model\Model {
 
   public function getTableName() { return "aco"; }
 

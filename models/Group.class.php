@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class Group extends \Core\Model {
+class Group extends \Core\Model\Model {
 
   const SUPERUSER = "superuser";
   const USER = "user";

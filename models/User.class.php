@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class User extends \Core\Model {
+class User extends \Core\Model\Model {
 
   public $password;
 

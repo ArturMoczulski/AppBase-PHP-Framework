@@ -4,7 +4,7 @@ namespace Core\Relations;
 
 class HasMany extends Definition {
 
-  public function save(\Core\Model $oModel, $iDepth = 1) {
+  public function save(\Core\Model\Model $oModel, $iDepth = 1) {
 
     $sRelationProperty = $this->getPropertyName();
 
@@ -16,7 +16,7 @@ class HasMany extends Definition {
 
   }
 
-  public function load(\Core\Model $oModel, $iDepth = 1) {
+  public function load(\Core\Model\Model $oModel, $iDepth = 1) {
 
     $oRelatedClass = $this->getModelInstance();
     $aRelatedModels = $oRelatedClass->findBy(
@@ -29,14 +29,14 @@ class HasMany extends Definition {
 
   }
 
-  public static function CreateFromSpec($mSpec, \Core\Model $oModel) {
+  public static function CreateFromSpec($mSpec, \Core\Model\Model $oModel) {
     if( is_array($mSpec) )
       return static::CreateFromArray($mSpec, $oModel);
     else
       return static::CreateFromName($mSpec, $oModel);
   }
 
-  public static function CreateFromArray($mSpec, \Core\Model $oModel) {
+  public static function CreateFromArray($mSpec, \Core\Model\Model $oModel) {
 
     if( !isset($mSpec['relationName']) )
       throw new \Core\Exceptions\RelationSpecificationInvalid();
@@ -59,7 +59,7 @@ class HasMany extends Definition {
     return new self($sName, $sRelatedClass, $sName, $sRelationForeignKey);
   }
 
-  public static function CreateFromName($mSpec, \Core\Model $oModel) {
+  public static function CreateFromName($mSpec, \Core\Model\Model $oModel) {
     
     $sRelatedClassName = $mSpec;
 

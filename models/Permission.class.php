@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class Permission extends \Core\Model {
+class Permission extends \Core\Model\Model {
 
   public function check() {
     return $this->access == 1;
@@ -11,7 +11,7 @@ class Permission extends \Core\Model {
   /**
    * @throws PermissionUndefined
    */
-  public static function CheckByNameAndModel($sACOName, \Core\Model $oModel) {
+  public static function CheckByNameAndModel($sACOName, \Core\Model\Model $oModel) {
 
     $oARO = new \Models\ARO();
     $oARO = $oARO->findByRequestObject($oModel);
@@ -51,19 +51,19 @@ class Permission extends \Core\Model {
 
   public function findByACOAndARO($oACO, $oARO, $iDepth = 1) {
     
-    $oFilter = new \Core\DataFilter();
+    $oFilter = new \Core\Database\DataFilter();
 
     $oFilter->addConstraint(
-      new \Core\DataFilterConstraint(
+      new \Core\Database\DataFilterConstraint(
         "aco_id", 
-        \Core\DataFilterConstraint::EQUAL, 
+        \Core\Database\DataFilterConstraint::EQUAL, 
         $oACO->id));
 
     $oFilter->addConstraint(
-      new \Core\DataFilterConstraint("aro_id", 
-      \Core\DataFilterConstraint::EQUAL, 
+      new \Core\Database\DataFilterConstraint("aro_id", 
+      \Core\Database\DataFilterConstraint::EQUAL, 
       $oARO->id,
-      \Core\DataFilterConstraint::_AND));
+      \Core\Database\DataFilterConstraint::_AND));
 
     return $this->find($oFilter, true, $iDepth);
 

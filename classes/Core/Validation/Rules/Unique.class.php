@@ -4,7 +4,7 @@ namespace Core\Validation\Rules;
 
 class Unique extends ModelRule {
 
-  public function __construct(\Core\Model $oModel = null, $sPropertyName = "") { 
+  public function __construct(\Core\Model\Model $oModel = null, $sPropertyName = "") { 
     parent::__construct($oModel, $sPropertyName);
     $this->bOnUpdate = false;
   }

@@ -4,7 +4,7 @@ namespace Core\Relations;
 
 class Schema {
 
-  public static function CreateFromSpec(\Core\Model $oModel, $aBelongsTo = array(), $aHasMany = array()) {
+  public static function CreateFromSpec(\Core\Model\Model $oModel, $aBelongsTo = array(), $aHasMany = array()) {
 
     $oSchema = new self();
 
@@ -22,7 +22,7 @@ class Schema {
     $this->aBelongsTo []= BelongsTo::CreateFromSpec($mRelationSpec); 
   }
 
-  public function addHasMany($mRelationSpec, \Core\Model $oModel) {
+  public function addHasMany($mRelationSpec, \Core\Model\Model $oModel) {
     $this->aHasMany []= HasMany::CreateFromSpec($mRelationSpec, $oModel);
   }
 

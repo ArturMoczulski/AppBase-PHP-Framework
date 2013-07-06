@@ -12,8 +12,8 @@ abstract class Definition {
     $this->sPropertyName = $sPropertyName;
   }
 
-  public abstract function load(\Core\Model $oModel, $iDepth = 1);
-  public abstract function save(\Core\Model $oModel, $iDepth = 1);
+  public abstract function load(\Core\Model\Model $oModel, $iDepth = 1);
+  public abstract function save(\Core\Model\Model $oModel, $iDepth = 1);
 
   public function getName() { return $this->sName; }
   public function getClassName() { return $this->sClassName; }
