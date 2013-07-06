@@ -1,11 +1,35 @@
 <?php
 namespace Core\Database;
 
-// Singleton
+/**
+ * \Core\Database\Database
+ *
+ * This is a singleton class which provides
+ * interface to communicate with the database.
+ * It can be easily DB abstracted, but currently
+ * it assumes a MySQL database. This is pretty
+ * much a proxy wrapper PHP's PDO.
+ *
+ * NOTE: singleton is a class of which there is
+ * at most one instance through out the application
+ * at any given time
+ */
 class Database {
-
+  
+  /**
+   * private constructor is a part of singleton pattern
+   * implementation
+   */
   private function __construct() {}   
 
+  /**
+   * use to access the singleton from any point of the
+   * application; this method also provides singleton
+   * pattern implementation
+   *
+   * example usage:
+   *  \Core\Database\Database::GetInstance->connect();
+   */
   public static function GetInstance() {
     if( self::$oInstance == null )
       self::$oInstance = new self();
@@ -23,7 +47,6 @@ class Database {
     $this->oConnection = new \PDO($sDsn, $GLOBALS['Application']['DB']['user'], $GLOBALS['Application']['DB']['pass']);
   }
 
-  // Proxy
   public function query($sQuery) {
     $mResult = $this->oConnection->query($sQuery);
     if( $mResult === false )

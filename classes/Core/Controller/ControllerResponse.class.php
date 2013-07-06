@@ -1,6 +1,12 @@
 <?php
 namespace Core\Controller;
 
+/**
+ * \Core\Controller\ControllerResponse
+ *
+ * This is a wrapper class to gather response information
+ * from the controller.
+ */
 class ControllerResponse {
 
   public function __construct($sControllerName, $sActionName, $aViewData = array(), $aLayoutData = array(), $sFlashMessage = "", $aValidationErrors =array()) {

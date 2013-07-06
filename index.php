@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * The main logic for processing HTTP requests
+ */
+
 // Loading the framework
 require_once "bootstrap.php";
 

@@ -2,6 +2,14 @@
 
 namespace Core;
 
+/**
+ * \Core\Router
+ *
+ * This class takes care of expanding expanding shortcut paths into
+ * correctly formatted resource paths.
+ *
+ * @see config/route.php for details on setting up the shortcut paths
+ */
 class Router {
 
   public function __construct() {
@@ -16,7 +24,7 @@ class Router {
   }
 
   protected function loadRoutes() {
-    $this->aRoutes = $GLOBALS['Application']['Router']; 
+    $this->aRoutes = $GLOBALS['Application']['routes']; 
   }
 
   protected $aRoutes;

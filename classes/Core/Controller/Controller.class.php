@@ -1,12 +1,28 @@
 <?php
 namespace Core\Controller;
 
+/**
+ * \Core\Controller\Controller
+ *
+ * The base controller logic. Provides support for following tasks:
+ * * handling sessions,
+ * * resource access restriction,
+ * * initiating connection to the database,
+ * * initiating Database Access Objects,
+ * * storing validation errors,
+ * * storing flash messages,
+ * * handling POST data,
+ * * invoking actions with respect to beforeAction() and afterAction() hooks,
+ * * ensuring the application is installed correctly by enforcing redirections,
+ * * providing means for sending data to views and layouts.
+ */
 abstract class Controller {
 
   public function __construct() {
 
     \Core\Database\Database::GetInstance()->connect();
 
+    // loading DAO
     foreach( $this->getModelsUsed() as $sModelClass ) {
       $this->loadModel($sModelClass);
     }
@@ -15,6 +31,16 @@ abstract class Controller {
 
   }
 
+  /**
+   * This method allows invoking controller's action from another controller.
+   * It ensures that the action will be processed in the same manner as it
+   * would be access directly by the request. That includes transferring
+   * the view data from the invoked controller to the current one seamlessly.
+   *
+   * This is also referred to as an "internal request"
+   *
+   * @returns \Core\Controller\ControllerResponse
+   */
   public function invokeControllerAction($sControllerName, $sActionName, $aArguments = array()) {
 
     $oDispatcher = new \Core\Dispatcher();
@@ -27,10 +53,16 @@ abstract class Controller {
 
   }
 
+  /**
+   * use to send data to the view
+   */
   public function setViewData($sVariableName, $mValue ) {
     $this->aViewData[$sVariableName] = $mValue;
   }
 
+  /**
+   * use to send data to the layout
+   */
   public function setLayoutData($sVariableName, $mValue) {
     $this->aLayoutData[$sVariableName] = $mValue;
   }
@@ -43,6 +75,11 @@ abstract class Controller {
     return $sVariableName ? $this->aLayoutData[$sVariableName] : $this->aLayoutData;
   }
 
+  /**
+   * NOTE: using this method will override whatever else validation errors
+   * have been already added. To simply add more see addValidationErrors()
+   * and addValidationError()
+   */
   public function setValidationErrors($aErrors) { $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'] = $aErrors; }
 
   public function addValidationErrors($aErrors) {
@@ -69,14 +106,24 @@ abstract class Controller {
     $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'][$sPropertyName] []= $oError;
   }
 
+  /**
+   * allows accessing validation errors that have been set up by the current
+   * action for the next request
+   */
   protected function getCurrentValidationErrors() {
     return $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'];
   }
 
+  /**
+   * allows accessing errors set up by the last requested action
+   */
   public function getValidationErrors() { 
     return $this->aValidationErrors; 
   }
 
+  /**
+   * checks if there were any validation errors in the CURRENT action
+   */
   public function isValid() { return count($this->getCurrentValidationErrors()) == 0; }
 
   public function getLoggedUser() { 
@@ -87,7 +134,10 @@ abstract class Controller {
 
   public function setUserLogged($oUser) { 
     $_SESSION[$GLOBALS['Application']['name']]["oUser"] = $oUser; 
-    
+
+    /* handling user switching functionality; once you have logged in as a
+     * superuser you can keep switching users despite their permission
+     * limitations */
     if( $oUser && \Models\Permission::CheckByNameAndModel("users/switch", $oUser->group ) ) {
       $_SESSION[$GLOBALS['Application']['name']]["bAllowUserSwitching"] = true;
     } else if( $oUser == null ) {
@@ -128,10 +178,16 @@ abstract class Controller {
     $_SESSION[$GLOBALS['Application']['name']]['sFlashMessage'] = null;
   }
 
+  /**
+   * clears errors set up in the current action
+   */
   protected function clearValidationErrors() {
     unset($_SESSION[$GLOBALS['Application']['name']]['aValidationErrors']);
   }
 
+  /**
+   * access control for both login-level access and ACL permissions
+   */
   public function authenticate($sActionName) {
 
     if( $this->isUserLogged() ) {
@@ -149,17 +205,21 @@ abstract class Controller {
     }
   }
 
+  /**
+   * checks user group's ACL permissions for the specified action;
+   * expects camelcase action name without the "Action" suffix
+   */
   public function checkActionAccess($sActionName) {
     
+    // figuring out the control object name
     $sACOName =
       \Utils\NounInflector::Underscore(
         \Utils\Namespaces::Strip(get_class($this))) .
       '/' .
       $sActionName;
 
-    // checking group permissions
+    // checking user group permissions
     $oPermission = null;
-
     return \Models\Permission::CheckByNameAndModel($sACOName, $this->getLoggedUser()->group);
 
   }
@@ -169,32 +229,49 @@ abstract class Controller {
     if( !\Controllers\AppInstallation::IsInstalled() &&
         !($this instanceof \Controllers\AppInstallation) &&
         !$this->internalRequest() ) {
+
+      /* the application is not installed correctly; force reinstall.
+       * this is not enforced if we are dealing with an internal request
+       * @see invokeControllerAction() */
       session_destroy();
       $this->redirect("/install");
+
     } else {
 
       if( !$this->internalRequest() ) {
+        // check access only for non-internal requests
         $this->authenticate($sActionName);
       }
     }
 
+    // preparing data for user switching interface
     if( $this->allowUserSwitching() ) {
       $oUserModel = new \Models\User();
       $this->setLayoutData("aSwitchableUsers", $oUserModel->find(null, false, 0));
     }
 
+    // other data for layout
     $this->setLayoutData('oLoggedUser', $this->getLoggedUser());
   }
 
   public function afterAction($sActionName) {
   }
 
+  /**
+   * This is controller's action logic wrapper. Servers the
+   * following purposes:
+   * * ensures that beforeAction() and afterAction() hooks 
+   * are being invoked,
+   * * handles switching the internal request state.
+   */
   public function callAction($sActionName, $aArguments = array(), $bInternalRequest = false ) {
 
+    // indicate if the request is internal
     $this->bInternalRequest = $bInternalRequest;
 
     $this->beforeAction($sActionName);
 
+    // invoke the actual action method
     $oReflectSelf = new \ReflectionObject($this);
     $oReflectAction = $oReflectSelf->getMethod($sActionName);
 
@@ -205,14 +282,21 @@ abstract class Controller {
 
     $this->afterAction($sActionName);
 
-    $this->bInternalRequest = false; // reset the internal request state
+    // reset the internal request state
+    $this->bInternalRequest = false;
 
     return $mResult;
 
   }
 
+  /**
+   * use for checking if the form has been sent
+   */
   public function isPostSent() { return !empty($_POST); }
 
+  /**
+   * use for retrieving data from the form
+   */
   public function getPostValue($sPropertyName) { 
     return isset($_POST[$sPropertyName]) ? 
       htmlspecialchars($_POST[$sPropertyName]) : 
@@ -223,8 +307,14 @@ abstract class Controller {
     $_POST[$sKey] = $sValue;
   }
 
+  /**
+   * access the main DAO
+   */
   public function getModel() { return $this->oModel; }
 
+  /**
+   * use for redirects
+   */
   public function redirect($sUrl) { 
     if( !$this->internalRequest() ) {
       header("Location: ".$sUrl);
@@ -232,6 +322,11 @@ abstract class Controller {
     }
   }
 
+  /**
+   * use for refreshing the current action; especially
+   * useful for displaying validation errors as those
+   * processing another request
+   */
   public function refresh() {
     if( !$this->internalRequest() )
       $this->redirect("");
@@ -255,6 +350,13 @@ abstract class Controller {
     }
   }
 
+  /**
+   * loads a model DAO for use in the controller;
+   * the DAO will be available in the appropriate controller 
+   * object property, i.e.:
+   * for model class "User", the DAO will be available under
+   * $this->oUser
+   */
   protected function loadModel($sModelClass) {
 
     if( !class_exists($sModelClass) )
@@ -264,6 +366,9 @@ abstract class Controller {
     $this->$sPropertyName = new $sModelClass();
   }
 
+  /**
+   * checks if the current action is triggered by an internal request
+   */
   protected function internalRequest() { return $this->bInternalRequest; }
 
   protected $oModel = null;
