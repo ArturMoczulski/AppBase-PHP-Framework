@@ -7,7 +7,7 @@ The purpose of this framework is to provide a very simple basis for highly custo
 
 Comparing AppBase to other PHP frameworks out there, the codebase I have shared here reminds me of ArchLinux approach to creating your own operating system. It is a highly configurable distro that requires a lot of your own customization, but also allows you to do things in your own way.
 
-This framework has been tested only for MySQL and probably supports only this database. There are DB abstration tools included, but no other database server has been tested or tried.
+This framework has only been tested for MySQL and probably supports only this database. There are DB abstration tools included, but no other database server has been tested or tried.
 
 Installation
 ===
