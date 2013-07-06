@@ -57,7 +57,7 @@ Conventions
 * <b>Foreign key names:</b> underscored with "_id" suffix, i.e. "user_id",
 * Any class file names except controller classes have a ".class.php" suffix,
 * <b>Model classes:</b> camelcase singular, i.e. "User";  the model class has to be enclosed in the "\Models\" namespace and extend "\Core\Model\Model"; all model classes are stored in models/ directory,
-* <b>Controller classes:</b> camelcase plural, i.e. "Users"; the controller class hat to be enclosed in the "\Controllers\" namespace and extend "\Core\Controller"; all controller classes are stored in controllers/ directory; all controller class file names must have a ".controller.php" prefix instead of ".class.php",
+* <b>Controller classes:</b> camelcase plural, i.e. "Users"; the controller class hat to be enclosed in the "\Controllers\" namespace and extend "\Core\Controller\Controller"; all controller classes are stored in controllers/ directory; all controller class file names must have a ".controller.php" prefix instead of ".class.php",
 * <b>Action names:</b> camelcase with "Action" suffix, i.e. loginAction,
 * Only controller public methods with the "Action" suffix are considered actions,
 * <b>Views:</b> views for controller's actions are stored in views/[underscored controller name]/[underscored action name].php;
@@ -95,7 +95,7 @@ Creating new controllers
 
     namespace Controllers;
     
-    class Products extends \Core\Controller {
+    class Products extends \Core\Controller\Controller {
     }
 
     ?>
