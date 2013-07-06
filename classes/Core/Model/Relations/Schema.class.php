@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Relations;
+namespace Core\Model\Relations;
 
 class Schema {
 

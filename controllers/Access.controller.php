@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class Access extends \Core\Controller {
+class Access extends \Core\Controller\Controller {
 
   protected $aModelsUsed = array();
 

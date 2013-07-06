@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class Groups extends \Core\Controller {
+class Groups extends \Core\Controller\Controller {
 
   public function viewAction($sId) {
     $oGroup = $this->oGroup->findBy("id",$sId,true);

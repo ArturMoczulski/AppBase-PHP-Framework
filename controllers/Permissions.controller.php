@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class Permissions extends \Core\Controller {
+class Permissions extends \Core\Controller\Controller {
 
   protected $aModelsUsed = array("Models\\Permission","Models\\ACO","Models\\ARO");
 

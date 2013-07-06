@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class AppInstallation extends \Core\Controller {
+class AppInstallation extends \Core\Controller\Controller {
 
   public static function IsInstalled() {
 

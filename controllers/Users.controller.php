@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 
-class Users extends \Core\Controller {
+class Users extends \Core\Controller\Controller {
 
   protected $aModelsUsed = array("Models\\User", "Models\\Group");
   protected $aPublicActions = array("loginAction");
