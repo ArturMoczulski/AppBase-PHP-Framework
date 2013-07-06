@@ -1,4 +1,4 @@
-am_custom_framework
+AppBase PHP Framework
 ===================
 
 Artur Moczulski's custom object oriented PHP application framework.
