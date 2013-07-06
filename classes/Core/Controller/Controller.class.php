@@ -43,34 +43,34 @@ abstract class Controller {
     return $sVariableName ? $this->aLayoutData[$sVariableName] : $this->aLayoutData;
   }
 
-  public function setValidationErrors($aErrors) { $_SESSION['mamproblem']['aValidationErrors'] = $aErrors; }
+  public function setValidationErrors($aErrors) { $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'] = $aErrors; }
 
   public function addValidationErrors($aErrors) {
     
     if( !is_array($aErrors) ) return;
 
-    if( !isset($_SESSION['mamproblem']['aValidationErrors']) ) {
+    if( !isset($_SESSION[$GLOBALS['Application']['name']]['aValidationErrors']) ) {
       $this->setValidationErrors($aErrors);
     } else {
-      $_SESSION['mamproblem']['aValidationErrors'] = array_merge(
-        $_SESSION['mamproblem']['aValidationErrors'],
+      $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'] = array_merge(
+        $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'],
         $aErrors);
     }
   }
 
   public function addValidationError($sPropertyName, $oError) {
 
-    if( !isset($_SESSION['mamproblem']['aValidationErrors']))
-      $_SESSION['mamproblem']['aValidationErrors'] = array();
+    if( !isset($_SESSION[$GLOBALS['Application']['name']]['aValidationErrors']))
+      $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'] = array();
 
-    if( !isset($_SESSION['mamproblem']['aValidationErrors'][$sPropertyName]) )
-      $_SESSION['mamproblem']['aValidationErrors'][$sPropertyName] = array();
+    if( !isset($_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'][$sPropertyName]) )
+      $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'][$sPropertyName] = array();
 
-    $_SESSION['mamproblem']['aValidationErrors'][$sPropertyName] []= $oError;
+    $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'][$sPropertyName] []= $oError;
   }
 
   protected function getCurrentValidationErrors() {
-    return $_SESSION['mamproblem']['aValidationErrors'];
+    return $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'];
   }
 
   public function getValidationErrors() { 
@@ -80,24 +80,24 @@ abstract class Controller {
   public function isValid() { return count($this->getCurrentValidationErrors()) == 0; }
 
   public function getLoggedUser() { 
-    return isset($_SESSION["mamproblem"]["oUser"]) ? $_SESSION["mamproblem"]["oUser"] : null; 
+    return isset($_SESSION[$GLOBALS['Application']['name']]["oUser"]) ? $_SESSION[$GLOBALS['Application']['name']]["oUser"] : null; 
   }
 
   public function isUserLogged() { return $this->getLoggedUser() != null; }
 
   public function setUserLogged($oUser) { 
-    $_SESSION["mamproblem"]["oUser"] = $oUser; 
+    $_SESSION[$GLOBALS['Application']['name']]["oUser"] = $oUser; 
     
     if( $oUser && \Models\Permission::CheckByNameAndModel("users/switch", $oUser->group ) ) {
-      $_SESSION["mamproblem"]["bAllowUserSwitching"] = true;
+      $_SESSION[$GLOBALS['Application']['name']]["bAllowUserSwitching"] = true;
     } else if( $oUser == null ) {
-      unset($_SESSION["mamproblem"]["bAllowUserSwitching"]);
+      unset($_SESSION[$GLOBALS['Application']['name']]["bAllowUserSwitching"]);
     }
   }
 
   public function allowUserSwitching() { 
-    return isset($_SESSION["mamproblem"]["bAllowUserSwitching"]) ? 
-      $_SESSION["mamproblem"]["bAllowUserSwitching"] : 
+    return isset($_SESSION[$GLOBALS['Application']['name']]["bAllowUserSwitching"]) ? 
+      $_SESSION[$GLOBALS['Application']['name']]["bAllowUserSwitching"] : 
       false; 
   }
 
@@ -112,24 +112,24 @@ abstract class Controller {
 
   public function getFlash() { return $this->sFlashMessage; }
 
-  public function setFlash($sMessage) { $_SESSION['mamproblem']['sFlashMessage'] = $sMessage; }
+  public function setFlash($sMessage) { $_SESSION[$GLOBALS['Application']['name']]['sFlashMessage'] = $sMessage; }
 
   protected function restoreFlash() { 
-    $this->sFlashMessage = isset($_SESSION['mamproblem']['sFlashMessage']) ? $_SESSION['mamproblem']['sFlashMessage'] : null; 
+    $this->sFlashMessage = isset($_SESSION[$GLOBALS['Application']['name']]['sFlashMessage']) ? $_SESSION[$GLOBALS['Application']['name']]['sFlashMessage'] : null; 
     $this->clearFlash(); 
   }
 
   protected function restoreValidationErrors() {
-    $this->aValidationErrors = isset($_SESSION['mamproblem']['aValidationErrors']) ? $_SESSION['mamproblem']['aValidationErrors'] : null;
+    $this->aValidationErrors = isset($_SESSION[$GLOBALS['Application']['name']]['aValidationErrors']) ? $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'] : null;
     $this->clearValidationErrors();
   }
 
   protected function clearFlash() {
-    $_SESSION['mamproblem']['sFlashMessage'] = null;
+    $_SESSION[$GLOBALS['Application']['name']]['sFlashMessage'] = null;
   }
 
   protected function clearValidationErrors() {
-    unset($_SESSION['mamproblem']['aValidationErrors']);
+    unset($_SESSION[$GLOBALS['Application']['name']]['aValidationErrors']);
   }
 
   public function authenticate($sActionName) {
