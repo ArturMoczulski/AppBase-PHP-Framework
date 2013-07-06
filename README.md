@@ -9,6 +9,8 @@ Comparing AppBase to other PHP frameworks out there, the codebase I have shared 
 
 This framework has only been tested for MySQL and probably supports only this database. There are DB abstration tools included, but no other database server has been tested or tried.
 
+AppBase is licenced under BSD 3-Clause Licence to provide complete freedom of use.
+
 Installation
 ===
 
