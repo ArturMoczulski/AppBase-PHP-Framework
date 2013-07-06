@@ -3,7 +3,7 @@
     <head>
         <base href="<?php echo $GLOBALS['Application']['URL'] ?>" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>AM custom framework</title>
+        <title>AppBase PHP Framework</title>
         <link rel='stylesheet' type='text/css' href='css/index.css' />
     </head>
     <body>
