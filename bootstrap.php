@@ -56,7 +56,7 @@ function loadLogic($sLogicName) {
       break;
 
     case "Models":
-      /* model course files are being loaded from the models/ directory */
+      /* model source files are being loaded from the models/ directory */
       $sFilePath = str_replace("\\", "/", "models/".substr($sLogicName, strlen("Models\\"))).".class.php";
       break;
 

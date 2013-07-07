@@ -73,7 +73,7 @@ class ViewRenderer extends Helpers\Helper {
       }
     }
 
-    $sErrorsHeader = $sErrors ? $this->getHelper("HTML")->tag("h3", "The following validation errors occurred.") : "";
+    $sErrorsHeader = $sErrors ? $this->getHelper("HTML")->tag("h3", "The following errors occurred.") : "";
     $sErrors = $sErrors ? $this->getHelper("HTML")->tag("ul", $sErrors) : "";
     $sErrors = $sErrorsHeader . $sErrors;
     $sErrors = $sErrors ? $this->getHelper("HTML")->tag("div", $sErrors, null, "errors") : "";

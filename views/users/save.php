@@ -7,12 +7,14 @@
     <label for="sEmail">Email</label>
     <input type="text" name="sEmail" value="<?php echo $oUser->email ?>" />
 
+    <?php if( $bAdd ) { ?>
     <fieldset>
       <label for="sPassword">New password:</label>
       <input type="password" name="sPassword" value="<?php echo $oUser->password ?>" />
       <label for="sPasswordConfirm">Repeat password:</label>
       <input type="password" name="sPasswordConfirm" />
     </fieldset>      
+    <?php } ?>
 
     <label for="iGroupId">Group</label>
     <select name="iGroupId">

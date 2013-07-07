@@ -17,7 +17,7 @@ class Dispatcher {
    * [underscored_controller_name]/[camelcaseActionName]/[argument_1]/...
    * i.e., users/view/1 
    */
-  public function dispatchFromRelativePath($sRelativePath) {
+  public function dispatchFromRelativePath($sRelativePath, $sRequestedPath) {
 
     // parsing the path
     $aDispatchInformation = $this->translateRelativePath($sRelativePath); 
@@ -26,7 +26,7 @@ class Dispatcher {
     $aArguments = $aDispatchInformation['arguments'];
 
     // dispatching
-    return $this->dispatch($sControllerName, $sActionName, $aArguments);
+    return $this->dispatch($sControllerName, $sActionName, $aArguments, $sRequestedPath);
 
   }
   
@@ -36,7 +36,12 @@ class Dispatcher {
    * @throws Exceptions\ControllerUndefined, Exceptions\ActionUndefined
    * @returns \Core\Controller\ControllerResponse
    */
-  public function dispatch($sControllerName, $sActionName, $aArguments, $bInternalRequest = false) {
+  public function dispatch(
+    $sControllerName, 
+    $sActionName, 
+    $aArguments, 
+    $sRequestedPath, 
+    $bInternalRequest = false) {
 
     $oResult = null;
 
@@ -55,7 +60,7 @@ class Dispatcher {
       throw new Exceptions\ActionUndefined($sActionName);
     }
 
-    $oController->callAction($sControllerMethod, $aArguments, $bInternalRequest);  
+    $oController->callAction($sControllerMethod, $sRequestedPath, $aArguments, $bInternalRequest);
 
     // returning the response
     $oResult = new \Core\Controller\ControllerResponse(

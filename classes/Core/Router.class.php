@@ -16,7 +16,7 @@ class Router {
     $this->loadRoutes();
   }
 
-  public function route($sPath) {
+  public function route($sPath, $oLoggedUser = null) {
     if( isset($this->aRoutes[$sPath]) )
       return $this->aRoutes[$sPath];
     else

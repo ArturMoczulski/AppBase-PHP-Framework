@@ -65,7 +65,7 @@ class DataFilterConstraint {
     return 
       $this->getPropertyName() . " " . 
       $this->getOperator() . " " . 
-      Database::GetInstance()->quote($this->getValue()); 
+      Database::GetInstance()->quote(strval($this->getValue())); 
   }
 
   protected $sValue;

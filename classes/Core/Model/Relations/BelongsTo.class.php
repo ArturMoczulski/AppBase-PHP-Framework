@@ -4,6 +4,10 @@ namespace Core\Model\Relations;
 
 class BelongsTo extends Definition {
 
+  public function __construct($sName, $sClassName, $sPropertyName, $sForeignKeyName, $bRequired = true) {
+    parent::__construct($sName, $sClassName, $sPropertyName, $sForeignKeyName, $bRequired);
+  }
+
   public function save(\Core\Model\Model $oModel, $iDepth = 1) {
 
     $sPropertyName = $this->getPropertyName();
@@ -58,8 +62,9 @@ class BelongsTo extends Definition {
     $sClassName = isset($aRelationSpec['className']) ? "Models\\".$aRelationSpec['className'] : "Models\\".$sName;
     $sPropertyName = \Utils\NounInflector::Underscore($sName);
     $sForeignKeyName = isset($aRelationSpec['foreignKeyName']) ? $aRelationSpec['foreignKeyName'] : $sPropertyName . "_id";
+    $bRequired = isset($aRelationSpec['required']) ? $aRelationSpec['required'] : false;
 
-    return new self($sName, $sClassName, $sPropertyName, $sForeignKeyName);
+    return new self($sName, $sClassName, $sPropertyName, $sForeignKeyName, $bRequired);
 
   }
 

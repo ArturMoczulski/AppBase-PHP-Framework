@@ -36,18 +36,23 @@ abstract class Model {
     $this->sTableName = static::ResolveTableName(); 
 
     // TODO: this should really be resolved using cache
-    $oSchemaStatement = 
-      \Core\Database\Database::GetInstance()->query(
-        "DESCRIBE ".$this->getTableName());
-    $this->aProperties = $oSchemaStatement->fetchAll(\PDO::FETCH_COLUMN);
+    $sSchemaQuery = "DESCRIBE ".$this->getTableName();
+    $oSchemaStatement = \Core\Database\Database::GetInstance()->query($sSchemaQuery);
+    if( !($oSchemaStatement instanceof \PDOStatement) )
+      throw new \Core\Exceptions\ErrorRetrievingData($sSchemaQuery, $oSchemaStatement);
+    else
+      $this->aProperties = $oSchemaStatement->fetchAll(\PDO::FETCH_COLUMN);
 
     // figuring ou the primary key
-    $oPrimaryKeyStatement = 
-      \Core\Database\Database::GetInstance()->query(
-        "SHOW INDEX FROM ".$this->getTableName()." WHERE key_name = 'PRIMARY'");
-    $sPrimaryKey = $oPrimaryKeyStatement->fetch(\PDO::FETCH_ASSOC);
-    $sPrimaryKey = $sPrimaryKey['Column_name'];
-    $this->sPrimaryKey = $sPrimaryKey;
+    $sPrimaryKeyQuery = "SHOW INDEX FROM ".$this->getTableName()." WHERE key_name = 'PRIMARY'";
+    $oPrimaryKeyStatement = \Core\Database\Database::GetInstance()->query($sPrimaryKeyQuery);
+    if( !($oPrimaryKeyStatement instanceof \PDOStatement) ) {
+      throw new \Core\Exceptions\ErrorRetrievingData($sPrimaryKeyQuery, $oPrimaryKeyStatement);
+    } else {
+      $sPrimaryKey = $oPrimaryKeyStatement->fetch(\PDO::FETCH_ASSOC);
+      $sPrimaryKey = $sPrimaryKey['Column_name'];
+      $this->sPrimaryKey = $sPrimaryKey;
+    }
 
     // initiating properties
     $this->initProperties();
@@ -143,6 +148,8 @@ abstract class Model {
      
       foreach( $this->oRelationsSchema->getBelongsTo() as $oBelongsTo ) {
 
+        if( !$oBelongsTo->isRequired() ) continue;
+
         if( !isset($this->aValidationRules[$oBelongsTo->getPropertyName()]) )
           $this->aValidationRules[$oBelongsTo->getPropertyName()]  = array();
 
@@ -231,11 +238,19 @@ abstract class Model {
     if( $oSaveResult->success() ) {
 
       if( !$this->isNew() ) { 
+
+        // update already existing data
         // a "where" filter for update query
         $oFilter = new \Core\Database\DataFilter();
-        $oFilter->addConstraint(new \Core\Database\DataFilterConstraint($this->getPrimaryKey(),\Core\Database\DataFilterConstraint::EQUAL,$this->{$this->getPrimaryKey()}));
+        $oFilter->addConstraint(
+          new \Core\Database\DataFilterConstraint(
+            $this->getPrimaryKey(),
+            \Core\Database\DataFilterConstraint::EQUAL,
+            $this->{$this->getPrimaryKey()}));
         $this->update($oFilter);
+
       } else {
+
         // insert for new data
         $this->insert();
       }
@@ -296,7 +311,11 @@ abstract class Model {
    */
   public function findBy($sPropertyName, $sValue, $bSingleObject = false, $iDepth = 1) {
     $oFilter = new \Core\Database\DataFilter();
-    $oFilter->addConstraint(new \Core\Database\DataFilterConstraint($sPropertyName, \Core\Database\DataFilterConstraint::EQUAL, $sValue));
+    $oFilter->addConstraint(
+      new \Core\Database\DataFilterConstraint(
+        $sPropertyName, 
+        \Core\Database\DataFilterConstraint::EQUAL, 
+        $sValue));
     return $this->find($oFilter, $bSingleObject, $iDepth);
   }
 
@@ -368,7 +387,9 @@ abstract class Model {
       if( !property_exists($this, $sPropertyName) )
         $aValues []= 'null';
       else {
-        $aValues []= \Core\Database\Database::GetInstance()->quote($this->$sPropertyName);
+        $aValues []= $this->$sPropertyName === null ? 
+          'null' :
+          \Core\Database\Database::GetInstance()->quote($this->$sPropertyName);
       }
     }
 
@@ -383,7 +404,7 @@ abstract class Model {
     $mResult = \Core\Database\Database::GetInstance()->query($sSql);
 
     if( !($mResult instanceof \PDOStatement) )
-      throw new Exceptions\ErrorSavingData($mResult);
+      throw new \Core\Exceptions\ErrorSavingData($mResult);
 
     // updating the data wrapper object with the resulting id
     $iId = \Core\Database\Database::GetInstance()->lastInsertId();
@@ -409,7 +430,9 @@ abstract class Model {
     foreach( $this->getPropertyNames() as $sPropertyName ) {
       $sValue = 'null';
       if( property_exists($this, $sPropertyName) ) {
-        $sValue = \Core\Database\Database::GetInstance()->quote($this->$sPropertyName);
+        $sValue = $this->$sPropertyName === null ? 
+          'null' :
+          \Core\Database\Database::GetInstance()->quote($this->$sPropertyName);
       } 
       $aSetStatements []= $sPropertyName . " = " . $sValue;
     }
@@ -422,7 +445,7 @@ abstract class Model {
     $mResult = \Core\Database\Database::GetInstance()->query($sSql);
 
     if( !($mResult instanceof \PDOStatement) )
-      throw new Exceptions\ErrorSavingData($mResult);
+      throw new \Core\Exceptions\ErrorSavingData($mResult);
 
     $this->afterUpdate();
   }
@@ -439,7 +462,11 @@ abstract class Model {
    */
   public function deleteBy($sPropertyName, $sValue) {
     $oFilter = new \Core\Database\DataFilter();
-    $oFilter->addConstraint(new \Core\Database\DataFilterConstraint($sPropertyName, \Core\Database\DataFilterConstraint::EQUAL, $sValue));
+    $oFilter->addConstraint(
+      new \Core\Database\DataFilterConstraint(
+        $sPropertyName, 
+        \Core\Database\DataFilterConstraint::EQUAL, 
+        $sValue));
     return $this->deleteByFilter($oFilter);
   }
 
@@ -461,7 +488,7 @@ abstract class Model {
     $mResult = \Core\Database\Database::GetInstance()->query($sSql);
 
     if( !($mResult instanceof \PDOStatement) )
-      throw new Exceptions\ErrorSavingData($mResult);
+      throw new \Core\Exceptions\ErrorSavingData($mResult);
 
     $this->afterDelete();
   }
@@ -516,7 +543,9 @@ abstract class Model {
    * when changing model's names into links. This is not really
    * a part of DB model.
    */
-  public function getDefaultAction() { return isset($this->aDefaultAction) ? $this->aDefaultAction : null; }
+  public function getDefaultAction() { 
+    return isset($this->aDefaultAction) ? $this->aDefaultAction : null; 
+  }
 
   public function toString() {
     return isset($this->id) ? $this->id : null;

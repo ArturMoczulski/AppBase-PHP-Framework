@@ -15,7 +15,7 @@ class Users extends \Core\Controller\Controller {
     if( $this->isPostSent() ) {
 
       // Password is a controller level input, validation is being done outside of model
-      if( !$this->getPostValue('sPassword') ) {
+      if( !$iId && !$this->getPostValue('sPassword') ) {
         $this->addValidationError(
           'password',
           new \Core\Validation\RuleResult(false, "Password is empty.")
@@ -23,7 +23,7 @@ class Users extends \Core\Controller\Controller {
       }
 
       // Checking if there are no typos in the password
-      if( $this->getPostValue('sPassword') != $this->getPostValue('sPasswordConfirm') ) {
+      if( !$iId && $this->getPostValue('sPassword') != $this->getPostValue('sPasswordConfirm') ) {
         $this->addValidationError(
           'password',
           new \Core\Validation\RuleResult(false, "Passwords don't match."));
@@ -44,7 +44,7 @@ class Users extends \Core\Controller\Controller {
         $oSaveResult = $oUser->save();
 
         if( $oSaveResult->success() ) {
-          $this->setFlash("User added.");
+          $this->setFlash("User saved.");
           $this->redirect("/users");
         } else {
           $this->refresh();

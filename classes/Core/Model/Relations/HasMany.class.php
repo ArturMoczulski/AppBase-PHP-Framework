@@ -4,6 +4,10 @@ namespace Core\Model\Relations;
 
 class HasMany extends Definition {
 
+  public function __construct($sName, $sClassName, $sPropertyName, $sForeignKeyName, $bRequired = false) {
+    parent::__construct($sName, $sClassName, $sPropertyName, $sForeignKeyName, $bRequired);
+  }
+
   public function save(\Core\Model\Model $oModel, $iDepth = 1) {
 
     $sRelationProperty = $this->getPropertyName();
@@ -56,7 +60,9 @@ class HasMany extends Definition {
         \Utils\Namespaces::Strip(get_class($oModel)))."_id";
     }
 
-    return new self($sName, $sRelatedClass, $sName, $sRelationForeignKey);
+    $bRequired = isset($mSpec['required']) ? $aRelationSpec['required'] : false;
+
+    return new self($sName, $sRelatedClass, $sName, $sRelationForeignKey, $bRequired);
   }
 
   public static function CreateFromName($mSpec, \Core\Model\Model $oModel) {

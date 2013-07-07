@@ -44,7 +44,12 @@ abstract class Controller {
   public function invokeControllerAction($sControllerName, $sActionName, $aArguments = array()) {
 
     $oDispatcher = new \Core\Dispatcher();
-    $oResponse = $oDispatcher->dispatch($sControllerName, $sActionName, $aArguments, true); 
+    $oResponse = $oDispatcher->dispatch(
+      $sControllerName, 
+      $sActionName, 
+      $aArguments, 
+      $this->getRequestedPath(),
+      true); 
 
     foreach( $oResponse->getViewData() as $sVariableName => $mValue )
       $this->setViewData($sVariableName, $mValue); 
@@ -111,7 +116,8 @@ abstract class Controller {
    * action for the next request
    */
   protected function getCurrentValidationErrors() {
-    return $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'];
+    return isset($_SESSION[$GLOBALS['Application']['name']]['aValidationErrors']) ?
+        $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'] : array();
   }
 
   /**
@@ -162,15 +168,20 @@ abstract class Controller {
 
   public function getFlash() { return $this->sFlashMessage; }
 
+  public function getCurrentFlash() { 
+    return isset($_SESSION[$GLOBALS['Application']['name']]['sFlashMessage']) ?
+        $_SESSION[$GLOBALS['Application']['name']]['sFlashMessage'] : "";
+  }
+
   public function setFlash($sMessage) { $_SESSION[$GLOBALS['Application']['name']]['sFlashMessage'] = $sMessage; }
 
   protected function restoreFlash() { 
-    $this->sFlashMessage = isset($_SESSION[$GLOBALS['Application']['name']]['sFlashMessage']) ? $_SESSION[$GLOBALS['Application']['name']]['sFlashMessage'] : null; 
+     $this->sFlashMessage = isset($_SESSION[$GLOBALS['Application']['name']]['sFlashMessage']) ? $_SESSION[$GLOBALS['Application']['name']]['sFlashMessage'] : ""; 
     $this->clearFlash(); 
   }
 
   protected function restoreValidationErrors() {
-    $this->aValidationErrors = isset($_SESSION[$GLOBALS['Application']['name']]['aValidationErrors']) ? $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'] : null;
+    $this->aValidationErrors = isset($_SESSION[$GLOBALS['Application']['name']]['aValidationErrors']) ? $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'] : array();
     $this->clearValidationErrors();
   }
 
@@ -195,6 +206,10 @@ abstract class Controller {
       $sActionName = substr($sActionName, 0, strlen($sActionName) - strlen("Action"));
       if( !$this->checkActionAccess($sActionName) ) {
 
+        $this->addValidationError("access", 
+          new \Core\Validation\RuleResult(false, 
+            \Utils\NounInflector::Underscore(\Utils\Namespaces::Strip(get_called_class()))."/".
+            $sActionName));
         $this->redirect("/access/denied");
 
       }
@@ -244,6 +259,14 @@ abstract class Controller {
       }
     }
 
+    // handling per-group homepages
+    if( (!$this->getRequestedPath() || $this->getRequestedPath() == "/") &&
+        $this->getLoggedUser()->group->home_url ) {
+      $this->setFlash($this->getFlash());
+      $this->setValidationErrors($this->getValidationErrors());
+      $this->redirect($this->getLoggedUser()->group->home_url);
+    }
+
     // preparing data for user switching interface
     if( $this->allowUserSwitching() ) {
       $oUserModel = new \Models\User();
@@ -264,7 +287,9 @@ abstract class Controller {
    * are being invoked,
    * * handles switching the internal request state.
    */
-  public function callAction($sActionName, $aArguments = array(), $bInternalRequest = false ) {
+  public function callAction($sActionName, $sRequestedPath, $aArguments = array(), $bInternalRequest = false ) {
+
+    $this->setRequestedPath($sRequestedPath);
 
     // indicate if the request is internal
     $this->bInternalRequest = $bInternalRequest;
@@ -322,6 +347,14 @@ abstract class Controller {
     }
   }
 
+  protected function setRequestedPath($sPath) {
+    $this->sRequestedPath = $sPath;
+  }
+
+  public function getRequestedPath() {
+    return $this->sRequestedPath;
+  }
+
   /**
    * use for refreshing the current action; especially
    * useful for displaying validation errors as those
@@ -377,6 +410,7 @@ abstract class Controller {
   protected $aViewData = array();
   protected $aLayoutData = array();
   protected $bInternalRequest = false;
+  protected $sRequestedPath = "";
 
 }
 
