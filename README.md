@@ -14,8 +14,8 @@ AppBase is licenced under BSD 3-Clause Licence to provide complete freedom of us
 Installation
 ===
 
-1. Deploy the project into desired directory.
-2. Set up the the virtual host to point application's base URL into the desired directory (see Apache 2 example virtual hosts file below).
+1. Deploy the project into the desired directory.
+2. Set up the the virtual host to point the application's base URL into the desired directory (see Apache 2 example virtual hosts file below).
 3. Set up the database:
   1. Create a database and a database user.
   2. Adjust base migration files to use the right database. Run: `sed -i 's/custom_framework/[db_name]/' db/migrations/*`.
@@ -55,7 +55,7 @@ Working with the framework
 
 Conventions
 -----------
-* <b>URLs:</b> RESTful [base url]/[underscore controller name]/[camelcase action name with lower case first letter]/[argument #1]/[argument #1]/..., i.e. "www.example.com/users/view/1"
+* <b>URLs:</b> RESTful [base url]/[underscore controller name]/[camelcase action name with lower case first letter]/[argument #1]/[argument #2]/..., i.e. "www.example.com/users/view/1"
 * <b>Table names:</b> underscored plural nouns, i.e. "users",
 * <b>Table columns:</b> underscored, i.e. "email_address",
 * <b>Foreign key names:</b> underscored with "_id" suffix, i.e. "user_id",
