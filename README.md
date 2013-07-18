@@ -11,6 +11,12 @@ This framework has only been tested for MySQL and probably supports only this da
 
 AppBase is licenced under BSD 3-Clause Licence to provide complete freedom of use.
 
+Versioning
+===
+0.1.0
+
+The application follows the general guidelines of semantic versioning (http://semver.org/).
+
 Installation
 ===
 
