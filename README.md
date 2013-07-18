@@ -3,11 +3,11 @@ AppBase PHP Framework
 
 Artur Moczulski's custom object oriented PHP web application framework.
 
-The purpose of this framework is to provide a very simple basis for highly customizable web applications. These libraries are meant to be a starting point for your applications providing standard solutions to generic problems and building a skeleton of conventions around your software. It's purpose it to be the starting point of your project without creating restraints and limitations of big open-source frameworks. As the framework serves only as an initial point of your work, you are highly encouraged to change and customize the code to your needs. The sooner your AppBase PHP Framework application branches off of the plain version, the better as it means your project is shaping up. 
+The purpose of this framework is to provide a very simple basis for highly customizable web applications. These libraries are meant to be a starting point for your applications providing standard solutions to generic problems and building a skeleton of conventions around your software. It's purpose it to be the starting point of your project without creating restraints and limitations of big open-source frameworks. As the framework serves only as an initial point of your work, you are highly encouraged to change and customize the code to your needs. The sooner your application drits of the plain version of AppBase, the better. It means your project is shaping up. 
 
 Comparing AppBase to other PHP frameworks out there, the codebase I have shared here reminds me of ArchLinux approach to creating your own operating system. It is a highly configurable distro that requires a lot of your own customization, but also allows you to do things in your own way.
 
-This framework has only been tested for MySQL and probably supports only this database. There are DB abstration tools included, but no other database server has been tested or tried.
+This framework has only been tested for MySQL and probably supports only this database. There is a database abstraction layer included, but no other database driver has been tested or tried.
 
 AppBase is licenced under BSD 3-Clause Licence to provide complete freedom of use.
 
