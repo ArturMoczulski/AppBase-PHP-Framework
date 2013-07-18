@@ -13,7 +13,7 @@ AppBase is licenced under BSD 3-Clause Licence to provide complete freedom of us
 
 Versioning
 ===
-0.1.0
+Current version: 0.1.0
 
 The application follows the general guidelines of semantic versioning (http://semver.org/).
 
