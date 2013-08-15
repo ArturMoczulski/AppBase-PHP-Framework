@@ -275,6 +275,9 @@ abstract class Controller {
 
     // other data for layout
     $this->setLayoutData('oLoggedUser', $this->getLoggedUser());
+    $this->setLayoutData('sCurrentActionUrl', 
+      \Utils\NounInflector::Underscore(\Utils\Namespaces::Strip(get_called_class()))."/".substr($sActionName, 0, strlen($sActionName)-strlen('Action')));
+    $this->setLayoutData('sRequestedPath', $this->getRequestedPath());
   }
 
   public function afterAction($sActionName) {
