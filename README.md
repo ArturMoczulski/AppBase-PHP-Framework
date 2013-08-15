@@ -3,19 +3,25 @@ AppBase PHP Framework
 
 Artur Moczulski's custom object oriented PHP web application framework.
 
-The purpose of this framework is to provide a very simple basis for highly customizable web applications. These libraries are meant to be a starting point for your applications providing standard solutions to generic problems and building a skeleton of conventions around your software. It's purpose it to be the starting point of your project without creating restraints and limitations of big open-source frameworks. As the framework serves only as an initial point of your work, you are highly encouraged to change and customize the code to your needs. The sooner your AppBase PHP Framework application branches off of the plain version, the better as it means your project is shaping up. 
+The purpose of this framework is to provide a very simple basis for highly customizable web applications. These libraries are meant to be a starting point for your applications providing standard solutions to generic problems and building a skeleton of conventions around your software. It's purpose it to be the starting point of your project without creating restraints and limitations of big open-source frameworks. As the framework serves only as an initial point of your work, you are highly encouraged to change and customize the code to your needs. The sooner your application drits of the plain version of AppBase, the better. It means your project is shaping up. 
 
 Comparing AppBase to other PHP frameworks out there, the codebase I have shared here reminds me of ArchLinux approach to creating your own operating system. It is a highly configurable distro that requires a lot of your own customization, but also allows you to do things in your own way.
 
-This framework has only been tested for MySQL and probably supports only this database. There are DB abstration tools included, but no other database server has been tested or tried.
+This framework has only been tested for MySQL and probably supports only this database. There is a database abstraction layer included, but no other database driver has been tested or tried.
 
 AppBase is licenced under BSD 3-Clause Licence to provide complete freedom of use.
+
+Versioning
+===
+Current version: 0.1.0
+
+The application follows the general guidelines of semantic versioning (http://semver.org/).
 
 Installation
 ===
 
-1. Deploy the project into desired directory.
-2. Set up the the virtual host to point application's base URL into the desired directory (see Apache 2 example virtual hosts file below).
+1. Deploy the project into the desired directory.
+2. Set up the the virtual host to point the application's base URL into the desired directory (see Apache 2 example virtual hosts file below).
 3. Set up the database:
   1. Create a database and a database user.
   2. Adjust base migration files to use the right database. Run: `sed -i 's/custom_framework/[db_name]/' db/migrations/*`.
@@ -55,7 +61,7 @@ Working with the framework
 
 Conventions
 -----------
-* <b>URLs:</b> RESTful [base url]/[underscore controller name]/[camelcase action name with lower case first letter]/[argument #1]/[argument #1]/..., i.e. "www.example.com/users/view/1"
+* <b>URLs:</b> RESTful [base url]/[underscore controller name]/[camelcase action name with lower case first letter]/[argument #1]/[argument #2]/..., i.e. "www.example.com/users/view/1"
 * <b>Table names:</b> underscored plural nouns, i.e. "users",
 * <b>Table columns:</b> underscored, i.e. "email_address",
 * <b>Foreign key names:</b> underscored with "_id" suffix, i.e. "user_id",
