@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @author Artur Moczulski <artur.moczulski@gmail.com>
+ */
+
 namespace Core\Database;
 
 /**
@@ -12,12 +16,17 @@ namespace Core\Database;
  */
 class DataFilter {
 
+  /**
+   * @param \Core\Database\DataFilterConstraint
+   */
   public function addConstraint(DataFilterConstraint $oConstraint) { 
     $this->aConstraints []= $oConstraint;  
   }
 
   /**
-   * provides the "WHERE ..." SQL code to use in a query
+   * Provides the "WHERE ..." SQL code to use in a query
+   *
+   * @return string
    */
   public function buildSql() {
     $sSql = "";
@@ -39,6 +48,9 @@ class DataFilter {
     return $sSql;
   }
 
+  /**
+   * @var array
+   */
   protected $aConstraints = array();
 
 }

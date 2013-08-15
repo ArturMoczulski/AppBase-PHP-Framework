@@ -1,4 +1,9 @@
 <?php 
+
+/**
+ * @author Artur Moczulski <artur.moczulski@gmail.com>
+ */
+
 namespace Core\Database;
 
 /**
@@ -11,8 +16,8 @@ namespace Core\Database;
  * input escaping logic which provides security against 
  * SQL injection attacks.
  *
- * Currently only supports the following comparison operators:
- * * =
+ * Currently only supports the following comparison SQL operators:
+ * *, =
  *
  * Currently only supports the following logical operators:
  * * AND
@@ -25,7 +30,14 @@ class DataFilterConstraint {
   const EQUAL = "=";
   const _AND = "AND";
 
+  /**
+   * @param string $sPropertyName
+   * @param string $sOperator
+   * @param string $sValue
+   * @param string $sLogicalOperator (optional)
+   */
   public function __construct($sPropertyName, $sOperator, $sValue, $sLogicalOperator = "") {
+
     $this->sValue = $sValue;
     $this->sPropertyName = $sPropertyName;
 
@@ -36,8 +48,10 @@ class DataFilterConstraint {
       $this->sOperator = $sOperator; 
 
     if( $sLogicalOperator ) {
+
       if( !self::IsValidLogicalOperator($sLogicalOperator) )
         throw new Exceptions\DataFilterOperatorInvalid($sLogicalOperator); 
+
       else
         $this->sLogicalOperator = $sLogicalOperator; 
     }
@@ -49,16 +63,22 @@ class DataFilterConstraint {
   public function getLogicalOperator() { return $this->sLogicalOperator; }
 
   public static function GetOperators() { return array(self::EQUAL); }
-  public static function IsValidOperator($sOperator) { return array_search($sOperator, self::GetOperators()) !== false; }
+  public static function IsValidOperator($sOperator) { 
+    return array_search($sOperator, self::GetOperators()) !== false; 
+  }
 
   public static function GetLogicalOperators() { return array(self::_AND); }
-  public static function IsValidLogicalOperator($sOperator) { return array_search($sOperator, self::GetLogicalOperators()) !== false; }
+  public static function IsValidLogicalOperator($sOperator) { 
+    return array_search($sOperator, self::GetLogicalOperators()) !== false; 
+  }
 
   /**
-   * generates the SQL code for the constraint, i.e.
+   * Generates the SQL code for the constraint, i.e.
    * "id = 1"
    *
    * IMPORTANT: ensures the user input is being escaped correctly
+   *
+   * @return string
    */
   public function buildSql() {
 
@@ -68,9 +88,24 @@ class DataFilterConstraint {
       Database::GetInstance()->quote(strval($this->getValue())); 
   }
 
+  /**
+   * @var string
+   */
   protected $sValue;
+
+  /**
+   * @var string
+   */
   protected $sOperator;
+
+  /**
+   * @var string
+   */
   protected $sPropertyName;
+
+  /**
+   * @var string
+   */
   protected $sLogicalOperator;
 
 }

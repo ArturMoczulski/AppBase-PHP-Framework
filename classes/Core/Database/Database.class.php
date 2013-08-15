@@ -62,6 +62,9 @@ class Database {
    * Run a SQL query. Returns error information on
    * error.
    *
+   * @todo this needs to be changed to use PDO's
+   * :argument syntax?
+   *
    * @param string $sQuery
    *
    * @return \PDOStatement|array
@@ -82,11 +85,34 @@ class Database {
 
   }
 
-  public function quote($sValue) { return $this->oConnection->quote($sValue); }
+  /**
+   * Sanitize the string.
+   *
+   * @param string $sValue
+   *
+   * @return string
+   */
+  public function quote($sValue) { 
+    return $this->oConnection->quote($sValue); 
+  }
 
-  public function lastInsertId() { return $this->oConnection->lastInsertId(); }
+  /**
+   * Get id of the last insert.
+   *
+   * @return int
+   */
+  public function lastInsertId() { 
+    return $this->oConnection->lastInsertId(); 
+  }
 
+  /**
+   * @var \Core\Database\Database
+   */
   private static $oInstance; 
+
+  /**
+   * @var \PDO
+   */
   protected $oConnection;
 
 }
