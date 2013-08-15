@@ -207,8 +207,8 @@ abstract class Controller {
    * @return \Models\User
    */
   public function getLoggedUser() { 
-    return isset($_SESSION[$GLOBALS['Application']['name']]["oUser"]) ? 
-      $_SESSION[$GLOBALS['Application']['name']]["oUser"] : 
+    return isset($_SESSION[$GLOBALS['Application']['name']]['oUser']) ? 
+      $_SESSION[$GLOBALS['Application']['name']]['oUser'] : 
       null; 
   }
 
@@ -354,18 +354,18 @@ abstract class Controller {
 
     if( $this->isUserLogged() ) {
 
-      $sActionName = substr($sActionName, 0, strlen($sActionName) - strlen("Action"));
+      $sActionName = substr($sActionName, 0, strlen($sActionName) - strlen('Action'));
       if( !$this->checkActionAccess($sActionName) ) {
 
         /**
          * handle access denied
          */
-        $this->addValidationError("access", 
+        $this->addValidationError('access', 
           new RuleResult(false, 
-            NounInflector::Underscore(Namespaces::Strip(get_called_class()))."/".
+            NounInflector::Underscore(Namespaces::Strip(get_called_class())).'/'.
             $sActionName));
 
-        $this->redirect("/access/denied");
+        $this->redirect('/access/denied');
 
       }
 
@@ -419,7 +419,7 @@ abstract class Controller {
        * @see invokeControllerAction() 
        **/
       session_destroy();
-      $this->redirect("/install");
+      $this->redirect('/install');
 
     } else {
 
@@ -445,7 +445,7 @@ abstract class Controller {
     if( $this->allowUserSwitching() ) {
 
       $oUserModel = new \Models\User();
-      $this->setLayoutData("aSwitchableUsers", $oUserModel->find(null, false, 0));
+      $this->setLayoutData('aSwitchableUsers', $oUserModel->find(null, false, 0));
 
     }
 
@@ -554,7 +554,7 @@ abstract class Controller {
    */
   public function redirect($sUrl) { 
     if( !$this->internalRequest() ) {
-      header("Location: ".$sUrl);
+      header('Location: '.$sUrl);
       exit();
     }
   }
@@ -584,7 +584,7 @@ abstract class Controller {
    */
   public function refresh() {
     if( !$this->internalRequest() )
-      $this->redirect("");
+      $this->redirect('');
   }
 
   /**
@@ -596,7 +596,7 @@ abstract class Controller {
    * @return bool
    */
   protected function isPublicAction($sActionName) {
-    if( property_exists( $this, "aPublicActions" ) ) {
+    if( property_exists( $this, 'aPublicActions' ) ) {
       return array_search($sActionName, $this->aPublicActions) !== false; 
     } else
       return false;
@@ -616,7 +616,7 @@ abstract class Controller {
     else {
 
       $sModelClass = 
-        "Models\\" . 
+        'Models\\' . 
         NounInflector::Singularize(Namespaces::Strip(get_called_class()));
 
       return array($sModelClass);
@@ -694,7 +694,7 @@ abstract class Controller {
   /**
    * @var string
    */
-  protected $sRequestedPath = "";
+  protected $sRequestedPath = '';
 
 }
 
