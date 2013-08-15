@@ -65,20 +65,24 @@ class Model extends Helper {
       echo "<td>".$mPropertyValue."</td>";
     if( count($aActions) ) {
       echo "<td>";
-      foreach($aActions as $aAction) {
-        $this->renderTableRowAction(
-          $aAction['sControllerName'],
-          $aAction['sActionName'],
-          array($oModel->id),
-          isset($aAction['sLinkName']) ? $aAction['sLinkName'] : "");
+      foreach($aActions as $iIndex => $aAction) {
+        if( !isset($aAction['aArguments']) )
+          $aActions[$iIndex]['aArguments'] = array($oModel->id);
       }
+      echo $this->getHelper("HTML")->actions($aActions);
       echo "</td>";
     }
     echo "</tr>";
   }
 
-  public function renderTable(\Core\Model\Model $oModel, $mData, $aIgnoreProperties = array(), $aActions = array() ) {
-    echo "<table>";
+  public function renderTable(\Core\Model\Model $oModel, $mData, $aIgnoreProperties = array(), $aActions = array(), $aAttributes = array('class'=>'table table-bordered table-striped table-hover')) {
+    $sAttributes = "";
+    $bFirstAttr = true;
+    foreach( $aAttributes as $sAttrName => $sAttrValue ) {
+      $sAttributes .= ($bFirstAttr ? " " : "") . "$sAttrName=\"$sAttrValue\"";
+      $bFirstAttr = false;
+    }
+    echo "<table$sAttributes>";
     $this->renderTableHeader($oModel, $aIgnoreProperties, count($aActions));
     if( count($mData) ) {
       foreach( $mData as $oModelInstance)  {
