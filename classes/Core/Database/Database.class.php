@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @author Artur Moczulski <artur.moczulski@gmail.com>
+ */
+
 namespace Core\Database;
 
 /**
@@ -8,27 +13,30 @@ namespace Core\Database;
  * interface to communicate with the database.
  * It can be easily DB abstracted, but currently
  * it assumes a MySQL database. This is pretty
- * much a proxy wrapper PHP's PDO.
+ * much a proxy wrapper around PHP's PDO.
  *
  * NOTE: singleton is a class of which there is
  * at most one instance through out the application
  * at any given time
  */
+
 class Database {
   
   /**
-   * private constructor is a part of singleton pattern
+   * Private constructor is a part of singleton pattern
    * implementation
    */
   private function __construct() {}   
 
   /**
-   * use to access the singleton from any point of the
+   * Use to access the singleton from any point of the
    * application; this method also provides singleton
    * pattern implementation
    *
    * example usage:
    *  \Core\Database\Database::GetInstance->connect();
+   *
+   * @return \Core\Database\Database
    */
   public static function GetInstance() {
     if( self::$oInstance == null )
@@ -37,6 +45,9 @@ class Database {
     return self::$oInstance;
   }
 
+  /**
+   * Establish the database connection
+   */
   public function connect() {
     $sDsn = "mysql:".
         "dbname=".$GLOBALS['Application']['DB']['name'].";".
@@ -47,12 +58,28 @@ class Database {
     $this->oConnection = new \PDO($sDsn, $GLOBALS['Application']['DB']['user'], $GLOBALS['Application']['DB']['pass']);
   }
 
+  /**
+   * Run a SQL query. Returns error information on
+   * error.
+   *
+   * @param string $sQuery
+   *
+   * @return \PDOStatement|array
+   */
   public function query($sQuery) {
+
     $mResult = $this->oConnection->query($sQuery);
-    if( $mResult === false )
+
+    if( $mResult === false ) {
+
       return $this->oConnection->errorInfo();
-    else
+
+    } else {
+
       return $mResult;
+
+    }
+
   }
 
   public function quote($sValue) { return $this->oConnection->quote($sValue); }
