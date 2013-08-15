@@ -73,16 +73,18 @@ class ViewRenderer extends Helpers\Helper {
       }
     }
 
-    $sErrorsHeader = $sErrors ? $this->getHelper("HTML")->tag("h3", "The following errors occurred.") : "";
     $sErrors = $sErrors ? $this->getHelper("HTML")->tag("ul", $sErrors) : "";
-    $sErrors = $sErrorsHeader . $sErrors;
-    $sErrors = $sErrors ? $this->getHelper("HTML")->tag("div", $sErrors, null, "errors") : "";
+    $sErrors = $sErrors ? $this->getHelper("HTML")->tag("div", $sErrors, null, "alert alert-error") : "";
 
     return $sErrors;
   }
 
   public function renderFlashMessage($sContent) {
-    return $this->getHelper("HTML")->tag("p", $sContent, null, "flash");
+    return $this->getHelper("HTML")->tag(
+      "div",
+      $sContent,
+      null,
+      "alert alert-info");
   }
 
   public function replaceTags($sOutput, $aMapping) {
