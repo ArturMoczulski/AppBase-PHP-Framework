@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @author Artur Moczulski <artur.moczulski@gmail.com>
+ */
+
 namespace Core\Controller;
 
 /**
@@ -9,6 +14,14 @@ namespace Core\Controller;
  */
 class ControllerResponse {
 
+  /**
+   * @param string $sControllerName
+   * @param string $sActionName
+   * @param array $aViewData (optional)
+   * @param array $aLayoutData (optional)
+   * @param string $sFlashMessage (optional)
+   * @param array $aValidationErrors (optional)
+   */
   public function __construct($sControllerName, $sActionName, $aViewData = array(), $aLayoutData = array(), $sFlashMessage = "", $aValidationErrors =array()) {
     $this->sControllerName = $sControllerName;
     $this->sActionName = $sActionName;
