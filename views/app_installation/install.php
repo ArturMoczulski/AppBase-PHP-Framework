@@ -3,14 +3,11 @@
 <form method="POST">
   <fieldset>
     <legend>Administrator user</legend>
-    <label for="sEmail">Email</label>
-    <input type="text" name="sEmail" />
+    <input type="text" placeholder="Email" name="sEmail" />
     <fieldset>
-      <label for="sPassword">New password:</label>
-      <input type="password" name="sPassword" />
-      <label for="sPasswordConfirm">Repeat password:</label>
-      <input type="password" name="sPasswordConfirm" />
-    </fieldset>      
+      <input type="password" placeholder="Password" name="sPassword" />
+      <input type="password" placeholder="Confirm password" name="sPasswordConfirm" />
+    </fieldset>
   </fieldset>
-  <input type="submit" name="submit" value="Install" />
+  <input type="submit" name="submit" class="btn btn-large btn-primary" value="Install" />
 </form>

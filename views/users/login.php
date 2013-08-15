@@ -1,9 +1,7 @@
-<h2>Login</h2>
-#{validationErrors}
-<form method="POST">
-  <label for="sEmail">Username</label>
-  <input type="text" name="sEmail" />
-  <label for="sPassword">Password</label>
-  <input type="password" name="sPassword" />
-  <input type="submit" name="submit" value="Login" />
+<form class="form-singin" method="post">
+    <h2 class="form-signin-heading">Login</h2>
+    #{validationErrors}
+    <input type="text" class="input-block-level" placeholder="Email" name="sEmail" />
+    <input type="password" class="input-block-level" placeholder="Password" name="sPassword" />
+    <input type="submit" name="submit" class="btn btn-large btn-primary" value="Login" />
 </form>

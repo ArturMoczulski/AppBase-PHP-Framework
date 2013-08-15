@@ -1,11 +1,10 @@
 <h2>Permissions</h2>
 #{validationErrors}
 #{flashMessage}
-
 <?php
 if( !empty($aPermissions) ) {
 
-  echo "<table>";
+  echo '<table class="table table-bordered table-striped table-hover">';
 
   echo "<thead>";
   echo "<th></th>";
@@ -35,3 +34,4 @@ if( !empty($aPermissions) ) {
 
 }
 ?>
+

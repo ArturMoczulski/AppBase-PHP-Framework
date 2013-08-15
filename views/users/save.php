@@ -1,18 +1,25 @@
-<h2><?php echo $bAdd ?  "Add" : "Edit" ?> user</h2>
-#{validationErrors}
+            <div class="row-fluid">
+                <div class="span1">
+                    <?php echo $this->getHelper("HTML")->actionsMenu(array(
+                      array('sLinkName'=>'All users', 'sControllerName'=>'users', 'sActionName'=>'index'),
+                      array('sLinkName'=>'Add user', 'sControllerName'=>'users', 'sActionName'=>'save')));
+                    ?>
+                </div>
+                
+                <div class="span11">
+                    <h2><?php echo $bAdd ?  "Add" : "Edit" ?> user</h2>
+                    #{validationErrors}
+                    #{flashMessage}
 <form method="POST">
 
   <fieldset>
 
-    <label for="sEmail">Email</label>
-    <input type="text" name="sEmail" value="<?php echo $oUser->email ?>" />
+    <input type="text" name="sEmail" placeholder="Email" value="<?php echo $oUser->email ?>" />
 
     <?php if( $bAdd ) { ?>
     <fieldset>
-      <label for="sPassword">New password:</label>
-      <input type="password" name="sPassword" value="<?php echo $oUser->password ?>" />
-      <label for="sPasswordConfirm">Repeat password:</label>
-      <input type="password" name="sPasswordConfirm" />
+      <input type="password" name="sPassword" placeholder="Password" value="<?php echo $oUser->password ?>" />
+      <input type="password" placeholder="Confirm password" name="sPasswordConfirm" />
     </fieldset>      
     <?php } ?>
 
@@ -26,5 +33,7 @@
     </select>
 
   </fieldset>
-  <input type="submit" name="submit" value="<?php echo $bAdd ? "Add" : "Edit" ?>" />
+  <input type="submit" class="btn" name="submit" value="<?php echo $bAdd ? "Add" : "Edit" ?>" />
 </form>
+                </div>
+            </div>
