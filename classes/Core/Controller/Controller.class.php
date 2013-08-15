@@ -1,5 +1,14 @@
 <?php
+
+/**
+ * @author Artur Moczulski <artur.moczulski@gmail.com>
+ */
+
 namespace Core\Controller;
+
+use \Core\Validation\RuleResult as RuleResult;
+use \Utils\NounInflector as NounInflector;
+use \Utils\Namespaces as Namespaces;
 
 /**
  * \Core\Controller\Controller
@@ -121,7 +130,7 @@ abstract class Controller {
    * have been already added. To simply add more see addValidationErrors()
    * and addValidationError()
    *
-   * @param array $aErrors An array of \Core\Validation\RuleResult
+   * @param array $aErrors An array of RuleResult
    */
   public function setValidationErrors($aErrors) { 
     $_SESSION[$GLOBALS['Application']['name']]['aValidationErrors'] = $aErrors; 
@@ -130,7 +139,7 @@ abstract class Controller {
   /**
    * Add validation errors.
    *
-   * @param array $aErrors An array of \Core\Validation\RuleResult
+   * @param array $aErrors An array of RuleResult
    */
   public function addValidationErrors($aErrors) {
     
@@ -149,7 +158,7 @@ abstract class Controller {
    * Add a single validation error.
    *
    * @param string $sPropertyName
-   * @param \Core\Validation\RuleResult $oError
+   * @param RuleResult $oError
    */
   public function addValidationError($sPropertyName, $oError) {
 
@@ -352,8 +361,8 @@ abstract class Controller {
          * handle access denied
          */
         $this->addValidationError("access", 
-          new \Core\Validation\RuleResult(false, 
-            \Utils\NounInflector::Underscore(\Utils\Namespaces::Strip(get_called_class()))."/".
+          new RuleResult(false, 
+            NounInflector::Underscore(Namespaces::Strip(get_called_class()))."/".
             $sActionName));
 
         $this->redirect("/access/denied");
@@ -379,7 +388,7 @@ abstract class Controller {
     
     // figuring out the control object name
     $sACOName =
-      \Utils\NounInflector::Underscore(\Utils\Namespaces::Strip(get_class($this))) .
+      NounInflector::Underscore(Namespaces::Strip(get_class($this))) .
       '/' .
       $sActionName;
 
@@ -443,7 +452,7 @@ abstract class Controller {
     // other data for layout
     $this->setLayoutData('oLoggedUser', $this->getLoggedUser());
     $this->setLayoutData('sCurrentActionUrl', 
-      \Utils\NounInflector::Underscore(\Utils\Namespaces::Strip(get_called_class())).'/'.substr($sActionName, 0, strlen($sActionName)-strlen('Action')));
+      NounInflector::Underscore(Namespaces::Strip(get_called_class())).'/'.substr($sActionName, 0, strlen($sActionName)-strlen('Action')));
     $this->setLayoutData('sRequestedPath', $this->getRequestedPath());
   }
 
@@ -608,7 +617,7 @@ abstract class Controller {
 
       $sModelClass = 
         "Models\\" . 
-        \Utils\NounInflector::Singularize(\Utils\Namespaces::Strip(get_called_class()));
+        NounInflector::Singularize(Namespaces::Strip(get_called_class()));
 
       return array($sModelClass);
     }
