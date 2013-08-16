@@ -36,7 +36,7 @@ class User extends \Core\Model\Model {
   }
 
   protected function generateSalt() {
-    $this->salt = md5(rand(0, 1023) . '@' . time());
+    $this->salt = crypt($this->password);
   }
 
   protected function encryptPassword() {
